@@ -1,5 +1,5 @@
 from sqlalchemy import DateTime, Float, ForeignKey, LargeBinary, create_engine, Column, Integer, String, Text, func
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 
 #criando o banco
 db = create_engine("sqlite:///banco.db")
@@ -142,6 +142,15 @@ Base.metadata.create_all(db)
 
 print("Banco de dados criado com sucesso!")
 
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=db)
+
+def get_db():
+    sessao = SessionLocal()
+    try:
+        yield sessao
+    finally:
+        sessao.close()
 
 
 
