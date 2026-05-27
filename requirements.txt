@@ -2,3 +2,6 @@ fastapi
 sqlalchemy
 bcrypt
 uvicorn
+requests
+numpy
+pandas
