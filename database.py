@@ -1,3 +1,5 @@
+import token
+
 from sqlalchemy import DateTime, Float, ForeignKey, LargeBinary, create_engine, Column, Integer, String, Text, func
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 
@@ -14,7 +16,8 @@ class Aluno(Base):
     id = Column("id",Integer, primary_key=True, autoincrement=True)
     nome = Column("nome", String, nullable=False)
     email = Column("email",String, nullable=False)
-    senha = Column("senha", String)
+    token = Column("token",             String,   nullable=True)
+    token_expira_em = Column("token_expira_em",   DateTime, nullable=True)
     preferencias_tipos = Column("preferencias_tipos", String, nullable=True)
 
     #Relacionamentos
@@ -22,10 +25,11 @@ class Aluno(Base):
     curtidas = relationship("Curtida", backref="aluno")
     sessoes = relationship("Sessao", backref="aluno")
     
-    def __init__(self, nome, email, senha, preferencias_tipos):
+    def __init__(self, nome, email, token=None, token_expira_em=None, preferencias_tipos=None):
         self.nome = nome
         self.email = email
-        self.senha = senha
+        self.token = token
+        self.token_expira_em = token_expira_em
         self.preferencias_tipos = preferencias_tipos
 
 # Conteúdo
