@@ -19,7 +19,7 @@ def gerar_token() -> str:
 def enviar_email_verificacao(email_destino: str, token: str, nome: str):
 
     mensagem = MIMEMultipart("alternative")
-    mensagem["Subject"] = "Seu código de acesso — Chatboot"
+    mensagem["Subject"] = "Seu código de acesso — SabIÁ"
     mensagem["From"]    = EMAIL_REMETENTE
     mensagem["To"]      = email_destino
 
@@ -27,21 +27,21 @@ def enviar_email_verificacao(email_destino: str, token: str, nome: str):
     corpo_texto = f"""
 Olá, {nome}!
 
-Seu código de acesso ao Chatboot é:
+Seu código de acesso ao SabIÁ é:
 
 {token}
 
 Este código é válido por 10 minutos.
 Se você não solicitou este código, ignore este email.
 
-Chatboot — Assistente Educacional
+SabIÁ — Chatboot Educacional
     """
 
     # Corpo do email em HTML
     corpo_html = f"""
     <html>
       <body style="font-family: Arial, sans-serif; padding: 20px;">
-        <h2 style="color: #4A90D9;">Chatboot — Assistente Educacional</h2>
+        <h2 style="color: #4A90D9;">SabIÁ — Chatboot Educacional</h2>
         <p>Olá, <strong>{nome}</strong>!</p>
         <p>Seu código de acesso é:</p>
         <h1 style="letter-spacing: 8px; color: #333;">{token}</h1>

@@ -104,7 +104,7 @@ class Sessao(Base):
     mensagens = relationship("Mensagem", backref="sessao")
 
     
-    def __init__(self, aluno_id, data_hora_inicio, data_hora_fim):
+    def __init__(self, aluno_id, data_hora_inicio=None, data_hora_fim=None):
         self.aluno_id = aluno_id
         self.data_hora_inicio = data_hora_inicio
         self.data_hora_fim = data_hora_fim 
