@@ -75,7 +75,7 @@ class Interacao(Base):
     fechado_em = Column("fechado_em", DateTime, nullable=True)
 
 
-    def __init__(self, aluno_id, conteudo_id, tempo_visualizacao, aberto_em, fechado_em):
+    def __init__(self, aluno_id, conteudo_id, tempo_visualizacao=None, aberto_em=None, fechado_em=None):
         self.aluno_id = aluno_id
         self.conteudo_id = conteudo_id
         self.tempo_visualizacao = tempo_visualizacao
