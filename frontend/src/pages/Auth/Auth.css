@@ -1,0 +1,71 @@
+.tela-auth { display: flex; min-height: 100vh; }
+.tela-auth__formulario {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cor-fundo);
+  padding: var(--espaco-6);
+}
+.tela-auth__card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--cor-branco);
+  border-radius: var(--raio-lg);
+  box-shadow: var(--sombra-card);
+  padding: var(--espaco-8) var(--espaco-6);
+}
+.tela-auth__etapa {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cor-texto-terciario);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: var(--espaco-2);
+}
+.tela-auth__card h2 { font-size: 22px; font-weight: 700; margin-bottom: var(--espaco-1); }
+.tela-auth__subtitulo { font-size: 13px; color: var(--cor-texto-secundario); margin-bottom: var(--espaco-6); line-height: 1.5; }
+.tela-auth__rodape-link { text-align: center; font-size: 13px; color: var(--cor-texto-secundario); margin-top: var(--espaco-4); }
+.tela-auth__rodape-link a { color: var(--cor-acento); font-weight: 600; }
+.link-botao { color: var(--cor-acento); font-weight: 600; font-size: 13px; }
+.checkbox-termos {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espaco-2);
+  font-size: 12px;
+  color: var(--cor-texto-secundario);
+  margin-bottom: var(--espaco-4);
+  cursor: pointer;
+}
+.checkbox-termos input { margin-top: 2px; }
+.checkbox-termos a { color: var(--cor-acento); font-weight: 600; }
+
+.preferencias-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+  margin-top: var(--espaco-1);
+}
+
+.preferencia-item {
+  padding: 6px 14px;
+  border-radius: var(--raio-pill);
+  border: 1px solid var(--cor-borda);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+  background: var(--cor-branco);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.preferencia-item:hover {
+  border-color: var(--cor-primaria-clara);
+  color: var(--cor-primaria-clara);
+}
+
+.preferencia-item.ativo {
+  background: var(--cor-acento);
+  border-color: var(--cor-acento);
+  color: var(--cor-branco);
+}

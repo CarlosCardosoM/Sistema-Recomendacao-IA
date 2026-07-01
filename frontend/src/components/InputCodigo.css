@@ -1,0 +1,13 @@
+.input-codigo { display: flex; gap: var(--espaco-2); margin-bottom: var(--espaco-2); }
+.input-codigo input {
+  width: 100%;
+  height: 48px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-md);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.input-codigo input:focus { border-color: var(--cor-primaria-clara); border-width: 2px; }
