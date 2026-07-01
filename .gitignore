@@ -1,4 +1,10 @@
-banco.db
-.env
-__pycache__/
-*.pyc
+backend/banco.db
+backend/banco.db-*
+backend/.env
+backend/__pycache__/
+backend/*.pyc
+backend/venv/
+
+frontend/node_modules/
+frontend/dist/
+frontend/.env
