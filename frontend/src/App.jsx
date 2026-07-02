@@ -5,6 +5,7 @@ import Entrar from "./pages/Auth/Entrar";
 import VerificarLogin from "./pages/Auth/VerificarLogin";
 import CriarConta from "./pages/Auth/CriarConta";
 import VerificarCadastro from "./pages/Auth/VerificarCadastro";
+import Chat from "./pages/Chat/Chat";
 
 import "./styles/global.css";
 
@@ -24,14 +25,7 @@ export default function App() {
           <Route path="/cadastro" element={<CriarConta />} />
           <Route path="/verificar-cadastro" element={<VerificarCadastro />} />
 
-          <Route
-            path="/chat"
-            element={
-              <RotaPrivada>
-                <div style={{ padding: 40 }}>Tela de chat — próxima etapa</div>
-              </RotaPrivada>
-            }
-          />
+          <Route path="/chat" element={<RotaPrivada><Chat /></RotaPrivada>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

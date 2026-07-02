@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
 import json
 
 from database import Aluno, Sessao, Mensagem, ChunkUsage
@@ -46,13 +47,10 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str) -> dict:
     Pipeline completo do chat:
     1. Busca o histórico da sessão
     2. Processa a pergunta com o RAG
-    3. Gera a resposta com o Ollama
-    3.1 Analisa a pergunta (tópico, subtópicos, nível de dificuldade)
+    3. Gera a resposta + análise da pergunta em PARALELO (mais rápido)
     4. Salva a pergunta e a resposta no banco
-    5. Registra os conteúdos usados pelo RAG
+    5. Registra os conteúdos usados pelo RAG (ChunkUsage)
     6. Gera recomendações personalizadas de conteúdo
-
-    Segue as funções responderPergunta() e recomendarConteudo() do pseudocódigo.
     """
     # Verifica se a sessão existe
     sessao = db.query(Sessao).filter(Sessao.id == sessao_id).first()
@@ -68,18 +66,26 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str) -> dict:
     ).order_by(Mensagem.criado_em).all()
 
     # 2. Processa a pergunta com o RAG
+    # gera embedding, busca conteúdos relevantes e monta o contexto
     resultado_rag = processar_pergunta(db, pergunta, historico_banco)
 
-    # 3. Gera a resposta com o Ollama
-    resposta = gerar_resposta(
-        pergunta  = pergunta,
-        contexto  = resultado_rag["contexto"],
-        historico = resultado_rag["historico"]
-    )
+    # 3. Gera resposta e análise em PARALELO
+    # em vez de chamar o Ollama duas vezes em sequência (lento),
+    # as duas chamadas rodam ao mesmo tempo em threads separadas
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        futuro_resposta = executor.submit(
+            gerar_resposta,
+            pergunta  = pergunta,
+            contexto  = resultado_rag["contexto"],
+            historico = resultado_rag["historico"]
+        )
+        futuro_analise = executor.submit(
+            analisar_pergunta,
+            pergunta
+        )
 
-    # 3.1 Analisa a pergunta para extrair tópico, subtópicos e nível de dificuldade
-    analise = analisar_pergunta(pergunta)
-    print("ANÁLISE DA PERGUNTA:", analise)  # debug temporário
+        resposta = futuro_resposta.result()
+        analise  = futuro_analise.result()
 
     # 4. Salva a pergunta do aluno no banco
     mensagem_aluno = Mensagem(
@@ -114,8 +120,7 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str) -> dict:
         db.add(chunk)
     db.commit()
 
-    # 7. Gera recomendações personalizadas combinando similaridade,
-    #    preferências, curtidas, histórico e dificuldade
+    # 7. Gera recomendações personalizadas combinando os 7 fatores do score
     embedding_pergunta = bytes_para_embedding(resultado_rag["embedding_pergunta"])
     recomendacoes = recomendar_conteudo(
         db                 = db,

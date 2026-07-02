@@ -4,13 +4,15 @@ from sqlalchemy.orm import Session
 from database import Conteudo
 from services.embedding_service import (
     gerar_embedding,
-    gerar_embedding_pergunta,
     bytes_para_embedding
 )
 
-
 # Quantidade de conteúdos relevantes recuperados por busca
 TOP_K = 3
+
+# Score mínimo de similaridade para considerar um conteúdo relevante
+# Abaixo disso, o conteúdo é ignorado mesmo sendo o "mais similar"
+THRESHOLD_SIMILARIDADE = 0.65
 
 
 def calcular_similaridade(vetor1: np.ndarray, vetor2: np.ndarray) -> float:
@@ -27,24 +29,20 @@ def calcular_similaridade(vetor1: np.ndarray, vetor2: np.ndarray) -> float:
     return float(np.dot(vetor1, vetor2) / (norma1 * norma2))
 
 
-def buscar_conteudos_relevantes(
-    db: Session,
-    embedding_pergunta: np.ndarray,
-    top_k: int = TOP_K
-) -> list[tuple]:
-    """
-    Busca os conteúdos mais similares à pergunta no banco.
-    Retorna lista de tuplas (conteudo, score) ordenada por score decrescente.
-    """
+THRESHOLD_SIMILARIDADE = 0.75  # aumenta
+
+def buscar_conteudos_relevantes(db, embedding_pergunta, top_k=TOP_K):
     conteudos = db.query(Conteudo).filter(Conteudo.embeddings != None).all()
 
     resultados = []
     for conteudo in conteudos:
         vetor_conteudo = bytes_para_embedding(conteudo.embeddings)
         score = calcular_similaridade(embedding_pergunta, vetor_conteudo)
-        resultados.append((conteudo, score))
+        print(f"[RAG] {conteudo.titulo[:40]} → score: {score:.4f}")  # debug
 
-    # Ordena por score decrescente e retorna os top_k
+        if score >= THRESHOLD_SIMILARIDADE:
+            resultados.append((conteudo, score))
+
     resultados.sort(key=lambda x: x[1], reverse=True)
     return resultados[:top_k]
 
@@ -72,12 +70,6 @@ Link: {conteudo.link}
 def montar_historico(mensagens: list) -> list[dict]:
     """
     Converte as mensagens da sessão para o formato que o Ollama entende.
-
-    Args:
-        mensagens: lista de objetos Mensagem do banco
-
-    Returns:
-        [{"role": "user", "content": "..."}, ...]
     """
     return [
         {"role": mensagem.papel, "content": mensagem.conteudo}
@@ -88,25 +80,12 @@ def montar_historico(mensagens: list) -> list[dict]:
 def processar_pergunta(db: Session, pergunta: str, mensagens: list) -> dict:
     """
     Pipeline completo do RAG — do texto da pergunta até o contexto montado.
-    Segue a função responderPergunta() do pseudocódigo.
-
-    Args:
-        db:        sessão do banco
-        pergunta:  texto digitado pelo aluno
-        mensagens: histórico de mensagens da sessão
-
-    Returns:
-        dicionário com:
-            - embedding_pergunta: bytes para salvar no banco
-            - conteudos_relevantes: lista de (conteudo, score)
-            - contexto: texto montado para enviar ao Ollama
-            - historico: histórico formatado para o Ollama
     """
     # 1. Gera o embedding da pergunta
     vetor_pergunta = gerar_embedding(pergunta)
     embedding_bytes = vetor_pergunta.tobytes()
 
-    # 2. Busca os conteúdos mais relevantes no banco
+    # 2. Busca os conteúdos mais relevantes no banco (com threshold)
     conteudos_relevantes = buscar_conteudos_relevantes(db, vetor_pergunta)
 
     # 3. Monta o contexto com os conteúdos recuperados
@@ -116,8 +95,8 @@ def processar_pergunta(db: Session, pergunta: str, mensagens: list) -> dict:
     historico = montar_historico(mensagens)
 
     return {
-        "embedding_pergunta":  embedding_bytes,
+        "embedding_pergunta":   embedding_bytes,
         "conteudos_relevantes": conteudos_relevantes,
-        "contexto":            contexto,
-        "historico":           historico,
+        "contexto":             contexto,
+        "historico":            historico,
     }

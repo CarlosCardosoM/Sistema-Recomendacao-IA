@@ -6,7 +6,6 @@ from database import Aluno, Conteudo, Interacao, Curtida
 from services.embedding_service import bytes_para_embedding
 from services.rag_service import calcular_similaridade
 
-
 # Pesos do scoreFinal — conforme o pseudocódigo original
 PESO_SIMILARIDADE  = 0.35
 PESO_PREFERENCIA   = 0.20
@@ -14,28 +13,33 @@ PESO_CURTIDA       = 0.10
 PESO_HISTORICO     = 0.10
 PESO_TEMPO         = 0.10
 PESO_INTERACAO     = 0.05
-PESO_DIFICULDADE    = 0.10
+PESO_DIFICULDADE   = 0.10
 
 # Tempo de referência para normalizar o score de tempo (em segundos)
 TEMPO_REFERENCIA = 300  # 5 minutos
+
+# Score mínimo para incluir na lista de recomendações
+# Evita recomendar conteúdos irrelevantes para perguntas fora do escopo
+SCORE_MINIMO_RECOMENDACAO = 0.30
 
 
 def normalizar_texto(texto: str | None) -> str | None:
     """
     Remove acentos e converte para minúsculo.
-    Usado para comparar nivel_dificuldade de forma confiável,
-    já que o Ollama pode retornar "intermediário" em vez de "intermediario".
+    Resolve diferença entre "intermediário" (LLM) e "intermediario" (banco).
     """
     if texto is None:
         return None
     texto_sem_acento = unicodedata.normalize("NFKD", texto)
-    texto_sem_acento = "".join(c for c in texto_sem_acento if not unicodedata.combining(c))
+    texto_sem_acento = "".join(
+        c for c in texto_sem_acento if not unicodedata.combining(c)
+    )
     return texto_sem_acento.lower().strip()
 
 
 def normalizar_tempo(tempo_segundos: float | None) -> float:
     """
-    Normaliza o tempo de visualização para um valor entre 0 e 1.
+    Converte o tempo de visualização para uma escala de 0 a 1.
     Usa TEMPO_REFERENCIA como o tempo "ideal" de leitura.
     """
     if tempo_segundos is None:
@@ -52,7 +56,7 @@ def calcular_score(
 ) -> float:
     """
     Calcula o score final de relevância de um conteúdo para um aluno.
-    Segue exatamente a função calcularScore() do pseudocódigo.
+    Combina 7 fatores ponderados conforme o pseudocódigo original.
     """
 
     # 1. Similaridade semântica entre a pergunta e o conteúdo
@@ -78,7 +82,7 @@ def calcular_score(
     ).first()
     score_historico = 0.5 if interacao_existente else 0.0
 
-    # 5. Tempo de visualização normalizado (se já abriu esse conteúdo)
+    # 5. Tempo de visualização normalizado
     score_tempo = 0.0
     if interacao_existente:
         score_tempo = normalizar_tempo(interacao_existente.tempo_visualizacao)
@@ -97,11 +101,11 @@ def calcular_score(
     # Soma ponderada final
     score_final = (
         PESO_SIMILARIDADE * score_similaridade +
-        PESO_PREFERENCIA  * score_preferencia +
-        PESO_CURTIDA      * score_curtida +
-        PESO_HISTORICO    * score_historico +
-        PESO_TEMPO        * score_tempo +
-        PESO_INTERACAO    * score_interacao +
+        PESO_PREFERENCIA  * score_preferencia  +
+        PESO_CURTIDA      * score_curtida       +
+        PESO_HISTORICO    * score_historico     +
+        PESO_TEMPO        * score_tempo         +
+        PESO_INTERACAO    * score_interacao     +
         PESO_DIFICULDADE  * score_dificuldade
     )
 
@@ -116,10 +120,8 @@ def recomendar_conteudo(
 ) -> list[dict]:
     """
     Gera a lista de conteúdos recomendados para o aluno.
-    Segue a função recomendarConteudo() do pseudocódigo.
-
-    A quantidade de recomendações aumenta conforme o aluno
-    abre mais conteúdos no sistema.
+    Só retorna conteúdos com score acima de SCORE_MINIMO_RECOMENDACAO.
+    Quantidade de recomendações aumenta conforme o engajamento do aluno.
     """
     aluno = db.query(Aluno).filter(Aluno.email == email).first()
     if not aluno:
@@ -149,7 +151,12 @@ def recomendar_conteudo(
     else:
         quantidade_recomendacoes = 3
 
-    top_recomendacoes = lista_scores[:quantidade_recomendacoes]
+    # Filtra por score mínimo — evita recomendar conteúdos irrelevantes
+    # para perguntas fora do escopo (ex: saudações, perguntas genéricas)
+    top_recomendacoes = [
+        (c, s) for c, s in lista_scores[:quantidade_recomendacoes]
+        if s >= SCORE_MINIMO_RECOMENDACAO
+    ]
 
     return [
         {
