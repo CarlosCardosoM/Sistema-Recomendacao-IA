@@ -182,10 +182,12 @@ export default function Chat() {
   const fimMensagensRef = useRef(null);
   const inputRef = useRef(null);
 
+  // Persiste sessões no localStorage
   useEffect(() => {
     try { localStorage.setItem(CHAVE_SESSOES, JSON.stringify(sessoes)); } catch {}
   }, [sessoes]);
 
+  // Ao entrar, retoma última sessão ou cria nova
   useEffect(() => {
     if (!aluno?.email) return;
     if (sessoes.length > 0) {
@@ -217,7 +219,10 @@ export default function Chat() {
         })));
       }
     } catch {
-      setSessoes((ant) => ant.filter((s) => s.id !== id));
+      // Sessão não existe mais no banco (ex: banco recriado)
+      // Limpa TODAS as sessões do localStorage e começa do zero
+      setSessoes([]);
+      localStorage.removeItem(CHAVE_SESSOES);
       criarNovaSessao();
     } finally {
       setCarregandoHistorico(false);
@@ -227,13 +232,13 @@ export default function Chat() {
   async function criarNovaSessao() {
     try {
       const dados = await iniciarSessao(aluno.email);
-      const novaSessao = { id: dados.sessao_id, titulo: `Sessão ${sessoes.length + 1}` };
+      const novaSessao = { id: dados.sessao_id, titulo: `Sessão ${Date.now()}` };
       setSessaoId(dados.sessao_id);
       setMensagens([{
         papel: "assistente",
         conteudo: `Olá, ${aluno.nome}! Sou o Sabiá, seu assistente de aprendizado. Como posso te ajudar hoje?`,
       }]);
-      setSessoes((ant) => [novaSessao, ...ant]);
+      setSessoes((ant) => [{ ...novaSessao, titulo: `Sessão ${ant.length + 1}` }, ...ant]);
     } catch (erro) {
       console.error("Erro ao criar sessão:", erro);
     }
@@ -245,11 +250,8 @@ export default function Chat() {
 
   async function aoExcluirSessao(id) {
     try { await excluirSessao(id); } catch {}
-
     const novaLista = sessoes.filter((s) => s.id !== id);
     setSessoes(novaLista);
-
-    // Se excluiu a sessão atual, abre a próxima ou cria nova
     if (id === sessaoId) {
       if (novaLista.length > 0) {
         carregarSessao(novaLista[0].id);
@@ -259,13 +261,9 @@ export default function Chat() {
     }
   }
 
-  // Limpar chat = excluir sessão atual e criar nova
   async function aoLimparChat() {
-    if (sessaoId) {
-      await aoExcluirSessao(sessaoId);
-    } else {
-      criarNovaSessao();
-    }
+    if (sessaoId) await aoExcluirSessao(sessaoId);
+    else criarNovaSessao();
   }
 
   async function aoEnviar(evento) {
@@ -281,7 +279,11 @@ export default function Chat() {
       const dados = await enviarPergunta(sessaoId, pergunta);
       setMensagens((ant) => [
         ...ant,
-        { papel: "assistente", conteudo: dados.resposta, recomendacoes: dados.recomendacoes || [] },
+        {
+          papel:         "assistente",
+          conteudo:      dados.resposta,
+          recomendacoes: dados.recomendacoes || [],
+        },
       ]);
     } catch {
       setMensagens((ant) => [
