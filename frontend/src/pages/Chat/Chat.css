@@ -5,9 +5,9 @@
   background: var(--cor-fundo);
 }
 
-/* ── Sidebar — agora BRANCA com borda direita ── */
+/* ── Sidebar — branca com borda direita ── */
 .sidebar {
-  width: 240px;
+  width: 220px;
   background: var(--cor-branco);
   border-right: 1px solid var(--cor-borda);
   display: flex;
@@ -15,43 +15,18 @@
   flex-shrink: 0;
 }
 
+/* ── Topo da sidebar ── */
 .sidebar__topo {
-  padding: var(--espaco-4) var(--espaco-3);
+  padding: var(--espaco-3);
   border-bottom: 1px solid var(--cor-borda);
 }
 
-.sidebar__logo {
-  display: flex;
-  align-items: center;
-  gap: var(--espaco-2);
-  margin-bottom: var(--espaco-3);
-}
-
-.sidebar__logo-img {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--raio-pill);
-  object-fit: cover;
-}
-
-.sidebar__logo-nome {
-  font-weight: 700;
-  font-size: 14px;
-  color: var(--cor-texto-principal);
-}
-
-.sidebar__logo-slogan {
-  font-size: 10px;
-  color: var(--cor-texto-terciario);
-}
-
-/* ── Botão Novo chat ── */
+/* ── Botão Novo chat — igual ao Figma (azul, borda, ícone +) ── */
 .btn-novo-chat {
   width: 100%;
   height: 36px;
-  background: var(--cor-fundo);
-  color: var(--cor-acento);
-  border: 1px solid var(--cor-borda);
+  background: var(--cor-acento);
+  color: var(--cor-branco);
   border-radius: var(--raio-md);
   font-size: 13px;
   font-weight: 600;
@@ -59,18 +34,19 @@
   align-items: center;
   justify-content: center;
   gap: var(--espaco-2);
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s;
 }
-.btn-novo-chat:hover {
-  background: #eff6ff;
-  border-color: var(--cor-acento);
-}
+.btn-novo-chat svg { color: var(--cor-branco) !important; }
+.btn-novo-chat:hover { background: var(--cor-primaria-hover); }
 
 /* ── Lista de sessões ── */
 .sidebar__sessoes {
   flex: 1;
   overflow-y: auto;
   padding: var(--espaco-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .sidebar__sessao-item {
@@ -96,13 +72,13 @@
   font-weight: 600;
 }
 
-/* ── Rodapé da sidebar ── */
+/* ── Rodapé — 3 itens: Limpar chat, Minha conta, Sair ── */
 .sidebar__rodape {
-  padding: var(--espaco-3) var(--espaco-2);
+  padding: var(--espaco-2);
   border-top: 1px solid var(--cor-borda);
   display: flex;
   flex-direction: column;
-  gap: var(--espaco-1);
+  gap: 2px;
 }
 
 .sidebar__link {
@@ -122,7 +98,7 @@
   color: var(--cor-acento);
 }
 .sidebar__link.sair { color: var(--cor-erro); }
-.sidebar__link.sair:hover { background: #fef2f2; color: var(--cor-erro); }
+.sidebar__link.sair:hover { background: #fef2f2; }
 
 /* ── Área principal ── */
 .chat-principal {
@@ -197,7 +173,6 @@
   gap: var(--espaco-3);
   max-width: 75%;
 }
-
 .mensagem.usuario {
   align-self: flex-end;
   flex-direction: row-reverse;
@@ -219,20 +194,16 @@
   line-height: 1.6;
   box-shadow: var(--sombra-card);
 }
-
 .mensagem.usuario .mensagem__balao {
   background: var(--cor-acento);
   color: var(--cor-branco);
 }
 
-/* Markdown dentro das mensagens */
+/* Markdown */
 .mensagem__balao p { margin-bottom: 8px; }
 .mensagem__balao p:last-child { margin-bottom: 0; }
 .mensagem__balao strong { font-weight: 700; }
-.mensagem__balao ul, .mensagem__balao ol {
-  padding-left: 20px;
-  margin-bottom: 8px;
-}
+.mensagem__balao ul, .mensagem__balao ol { padding-left: 20px; margin-bottom: 8px; }
 .mensagem__balao li { margin-bottom: 4px; }
 .mensagem__balao a { color: var(--cor-acento); }
 
@@ -271,11 +242,7 @@
   letter-spacing: 0.05em;
   margin-bottom: var(--espaco-2);
 }
-.recomendacoes__lista {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-2);
-}
+.recomendacoes__lista { display: flex; flex-direction: column; gap: var(--espaco-2); }
 .recomendacao-card {
   display: flex;
   align-items: center;
@@ -287,11 +254,7 @@
   font-size: 13px;
   gap: var(--espaco-2);
 }
-.recomendacao-card__titulo {
-  font-weight: 600;
-  color: var(--cor-texto-principal);
-  flex: 1;
-}
+.recomendacao-card__titulo { font-weight: 600; color: var(--cor-texto-principal); flex: 1; }
 .recomendacao-card__tipo {
   font-size: 11px;
   color: var(--cor-texto-terciario);
@@ -300,12 +263,7 @@
   border-radius: var(--raio-pill);
   border: 1px solid var(--cor-borda);
 }
-.recomendacao-card__link {
-  color: var(--cor-acento);
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
-}
+.recomendacao-card__link { color: var(--cor-acento); font-size: 12px; font-weight: 600; white-space: nowrap; }
 .recomendacao-card__link:hover { text-decoration: underline; }
 
 /* ── Input de mensagem ── */
@@ -353,3 +311,128 @@
 }
 .btn-enviar:hover:not(:disabled) { background: var(--cor-primaria-hover); }
 .btn-enviar:disabled { background: var(--cor-texto-terciario); cursor: not-allowed; }
+
+/* ── Ajustes dos ícones do botão Novo chat ── */
+.btn-novo-chat {
+  width: 100%;
+  height: 38px;
+  background: var(--cor-acento);
+  color: var(--cor-branco);
+  border-radius: var(--raio-md);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-2);
+  transition: background 0.15s;
+  border: none;
+}
+.btn-novo-chat:hover { background: var(--cor-primaria-hover); }
+
+.btn-novo-chat__icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Edição inline do nome da sessão ── */
+.sidebar__sessao-item {
+  position: relative;
+}
+
+.sidebar__sessao-titulo {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+/* Ícone de lápis — aparece só no hover */
+.sidebar__sessao-editar {
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: opacity 0.15s, background 0.15s;
+}
+.sidebar__sessao-item:hover .sidebar__sessao-editar {
+  opacity: 1;
+}
+.sidebar__sessao-editar:hover {
+  background: #dbeafe;
+}
+
+/* Estado de edição */
+.sidebar__sessao-editando {
+  gap: 6px;
+  padding: 4px 8px;
+}
+
+.sidebar__sessao-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cor-acento);
+  font-family: inherit;
+  min-width: 0;
+}
+
+.sidebar__sessao-confirmar {
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.sidebar__sessao-confirmar:hover {
+  background: #dbeafe;
+}
+
+/* ── Carregando histórico ── */
+.chat-carregando-historico {
+  text-align: center;
+  color: var(--cor-texto-terciario);
+  font-size: 13px;
+  padding: var(--espaco-8) 0;
+}
+
+/* ── Card de recomendação acessado ── */
+.recomendacao-card.acessado {
+  opacity: 0.7;
+}
+.recomendacao-card.acessado .recomendacao-card__link {
+  color: var(--cor-sucesso);
+  cursor: default;
+}
+
+/* ── Ações da sessão (lápis + lixeira) ── */
+.sidebar__sessao-acoes {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.sidebar__sessao-item:hover .sidebar__sessao-acoes { opacity: 1; }
+
+.sidebar__sessao-excluir {
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+.sidebar__sessao-excluir:hover { background: #fecaca; }
+.sidebar__sessao-excluir:hover svg { color: #dc2626 !important; }

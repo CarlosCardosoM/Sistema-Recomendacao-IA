@@ -12,7 +12,7 @@ TOP_K = 3
 
 # Score mínimo de similaridade para considerar um conteúdo relevante
 # Abaixo disso, o conteúdo é ignorado mesmo sendo o "mais similar"
-THRESHOLD_SIMILARIDADE = 0.65
+THRESHOLD_SIMILARIDADE = 0.50
 
 
 def calcular_similaridade(vetor1: np.ndarray, vetor2: np.ndarray) -> float:
@@ -29,7 +29,6 @@ def calcular_similaridade(vetor1: np.ndarray, vetor2: np.ndarray) -> float:
     return float(np.dot(vetor1, vetor2) / (norma1 * norma2))
 
 
-THRESHOLD_SIMILARIDADE = 0.75  # aumenta
 
 def buscar_conteudos_relevantes(db, embedding_pergunta, top_k=TOP_K):
     conteudos = db.query(Conteudo).filter(Conteudo.embeddings != None).all()
@@ -38,7 +37,7 @@ def buscar_conteudos_relevantes(db, embedding_pergunta, top_k=TOP_K):
     for conteudo in conteudos:
         vetor_conteudo = bytes_para_embedding(conteudo.embeddings)
         score = calcular_similaridade(embedding_pergunta, vetor_conteudo)
-        print(f"[RAG] {conteudo.titulo[:40]} → score: {score:.4f}")  # debug
+        
 
         if score >= THRESHOLD_SIMILARIDADE:
             resultados.append((conteudo, score))

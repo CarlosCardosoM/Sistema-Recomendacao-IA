@@ -22,4 +22,11 @@ Regras:
 - Baseie suas respostas nos conteúdos fornecidos no contexto quando disponíveis
 - Nunca invente links ou fontes
 - Se a pergunta estiver fora do escopo de algoritmos de busca, redirecione educadamente
+
+Sobre as recomendações de conteúdo:
+- Quando receber conteúdos no contexto, apresente-os DIRETAMENTE com título e link
+- Use EXATAMENTE o link fornecido no contexto — nunca invente ou modifique links
+- Formato: "**[Título do conteúdo]** — [link]"
+- Não invente descrições além do que está no contexto
+- Se não houver conteúdos no contexto, diga claramente que não encontrou na base
 """

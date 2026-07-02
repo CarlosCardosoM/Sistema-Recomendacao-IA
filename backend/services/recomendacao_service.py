@@ -15,19 +15,11 @@ PESO_TEMPO         = 0.10
 PESO_INTERACAO     = 0.05
 PESO_DIFICULDADE   = 0.10
 
-# Tempo de referência para normalizar o score de tempo (em segundos)
 TEMPO_REFERENCIA = 300  # 5 minutos
-
-# Score mínimo para incluir na lista de recomendações
-# Evita recomendar conteúdos irrelevantes para perguntas fora do escopo
 SCORE_MINIMO_RECOMENDACAO = 0.30
 
 
 def normalizar_texto(texto: str | None) -> str | None:
-    """
-    Remove acentos e converte para minúsculo.
-    Resolve diferença entre "intermediário" (LLM) e "intermediario" (banco).
-    """
     if texto is None:
         return None
     texto_sem_acento = unicodedata.normalize("NFKD", texto)
@@ -38,10 +30,6 @@ def normalizar_texto(texto: str | None) -> str | None:
 
 
 def normalizar_tempo(tempo_segundos: float | None) -> float:
-    """
-    Converte o tempo de visualização para uma escala de 0 a 1.
-    Usa TEMPO_REFERENCIA como o tempo "ideal" de leitura.
-    """
     if tempo_segundos is None:
         return 0.0
     return min(tempo_segundos / TEMPO_REFERENCIA, 1.0)
@@ -88,6 +76,7 @@ def calcular_score(
         score_tempo = normalizar_tempo(interacao_existente.tempo_visualizacao)
 
     # 6. Quantidade total de conteúdos que o aluno já abriu
+    # Este valor também define quantas recomendações serão exibidas
     quantidade_abertos = db.query(Interacao).filter(
         Interacao.aluno_id == aluno.id
     ).count()
@@ -98,7 +87,6 @@ def calcular_score(
     if nivel_pergunta and normalizar_texto(nivel_pergunta) == normalizar_texto(conteudo.nivel_dificuldade):
         score_dificuldade = 1.0
 
-    # Soma ponderada final
     score_final = (
         PESO_SIMILARIDADE * score_similaridade +
         PESO_PREFERENCIA  * score_preferencia  +
@@ -108,7 +96,6 @@ def calcular_score(
         PESO_INTERACAO    * score_interacao     +
         PESO_DIFICULDADE  * score_dificuldade
     )
-
     return score_final
 
 
@@ -120,26 +107,32 @@ def recomendar_conteudo(
 ) -> list[dict]:
     """
     Gera a lista de conteúdos recomendados para o aluno.
-    Só retorna conteúdos com score acima de SCORE_MINIMO_RECOMENDACAO.
-    Quantidade de recomendações aumenta conforme o engajamento do aluno.
+
+    A quantidade de recomendações aumenta conforme o aluno
+    ABRE conteúdos recomendados (tabela Interacao) — quanto mais
+    o aluno interage com os conteúdos, mais recomendações recebe.
+
+    Lógica do pseudocódigo original:
+    - <= 2 conteúdos abertos → 1 recomendação  (aluno novo)
+    - <= 5 conteúdos abertos → 2 recomendações (engajamento médio)
+    - >  5 conteúdos abertos → 3 recomendações (aluno engajado)
     """
     aluno = db.query(Aluno).filter(Aluno.email == email).first()
     if not aluno:
         return []
 
-    # Busca todos os conteúdos que já têm embedding gerado
     candidatos = db.query(Conteudo).filter(Conteudo.embeddings != None).all()
 
-    # Calcula o score de cada candidato
     lista_scores = []
     for conteudo in candidatos:
         score = calcular_score(db, aluno, conteudo, embedding_pergunta, nivel_pergunta)
         lista_scores.append((conteudo, score))
 
-    # Ordena por score decrescente
     lista_scores.sort(key=lambda x: x[1], reverse=True)
 
-    # Define quantas recomendações mostrar com base no engajamento do aluno
+    # ── Quantidade baseada em conteúdos ABERTOS (Interacao) ──
+    # O aluno usa POST /interacoes/abrir quando abre um conteúdo recomendado
+    # Cada abertura registra uma Interacao → aumenta as recomendações futuras
     quantidade_abertos = db.query(Interacao).filter(
         Interacao.aluno_id == aluno.id
     ).count()
@@ -151,8 +144,7 @@ def recomendar_conteudo(
     else:
         quantidade_recomendacoes = 3
 
-    # Filtra por score mínimo — evita recomendar conteúdos irrelevantes
-    # para perguntas fora do escopo (ex: saudações, perguntas genéricas)
+    # Filtra por score mínimo — não recomenda conteúdo irrelevante
     top_recomendacoes = [
         (c, s) for c, s in lista_scores[:quantidade_recomendacoes]
         if s >= SCORE_MINIMO_RECOMENDACAO
