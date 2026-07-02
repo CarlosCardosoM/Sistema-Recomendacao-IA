@@ -5,11 +5,11 @@
   background: var(--cor-fundo);
 }
 
-/* ── Sidebar ── */
+/* ── Sidebar — agora BRANCA com borda direita ── */
 .sidebar {
   width: 240px;
-  background: var(--cor-primaria);
-  color: var(--cor-branco);
+  background: var(--cor-branco);
+  border-right: 1px solid var(--cor-borda);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -17,7 +17,7 @@
 
 .sidebar__topo {
   padding: var(--espaco-4) var(--espaco-3);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid var(--cor-borda);
 }
 
 .sidebar__logo {
@@ -27,9 +27,9 @@
   margin-bottom: var(--espaco-3);
 }
 
-.sidebar__logo img {
-  width: 32px;
-  height: 32px;
+.sidebar__logo-img {
+  width: 36px;
+  height: 36px;
   border-radius: var(--raio-pill);
   object-fit: cover;
 }
@@ -37,18 +37,21 @@
 .sidebar__logo-nome {
   font-weight: 700;
   font-size: 14px;
+  color: var(--cor-texto-principal);
 }
 
 .sidebar__logo-slogan {
   font-size: 10px;
-  color: #c7d2fe;
+  color: var(--cor-texto-terciario);
 }
 
+/* ── Botão Novo chat ── */
 .btn-novo-chat {
   width: 100%;
   height: 36px;
-  background: rgba(255,255,255,0.15);
-  color: var(--cor-branco);
+  background: var(--cor-fundo);
+  color: var(--cor-acento);
+  border: 1px solid var(--cor-borda);
   border-radius: var(--raio-md);
   font-size: 13px;
   font-weight: 600;
@@ -56,15 +59,18 @@
   align-items: center;
   justify-content: center;
   gap: var(--espaco-2);
-  transition: background 0.15s;
+  transition: background 0.15s, border-color 0.15s;
 }
-.btn-novo-chat:hover { background: rgba(255,255,255,0.25); }
+.btn-novo-chat:hover {
+  background: #eff6ff;
+  border-color: var(--cor-acento);
+}
 
 /* ── Lista de sessões ── */
 .sidebar__sessoes {
   flex: 1;
   overflow-y: auto;
-  padding: var(--espaco-2) var(--espaco-2);
+  padding: var(--espaco-2);
 }
 
 .sidebar__sessao-item {
@@ -73,20 +79,27 @@
   padding: var(--espaco-2) var(--espaco-3);
   border-radius: var(--raio-md);
   font-size: 13px;
-  color: #c7d2fe;
+  color: var(--cor-texto-secundario);
   display: flex;
   align-items: center;
   gap: var(--espaco-2);
   transition: background 0.15s;
   cursor: pointer;
 }
-.sidebar__sessao-item:hover,
-.sidebar__sessao-item.ativo { background: rgba(255,255,255,0.15); color: var(--cor-branco); }
+.sidebar__sessao-item:hover {
+  background: #eff6ff;
+  color: var(--cor-acento);
+}
+.sidebar__sessao-item.ativo {
+  background: #eff6ff;
+  color: var(--cor-acento);
+  font-weight: 600;
+}
 
 /* ── Rodapé da sidebar ── */
 .sidebar__rodape {
   padding: var(--espaco-3) var(--espaco-2);
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid var(--cor-borda);
   display: flex;
   flex-direction: column;
   gap: var(--espaco-1);
@@ -98,15 +111,18 @@
   padding: var(--espaco-2) var(--espaco-3);
   border-radius: var(--raio-md);
   font-size: 13px;
-  color: #c7d2fe;
+  color: var(--cor-texto-secundario);
   display: flex;
   align-items: center;
   gap: var(--espaco-2);
   transition: background 0.15s;
 }
-.sidebar__link:hover { background: rgba(255,255,255,0.1); color: var(--cor-branco); }
-.sidebar__link.sair { color: #fca5a5; }
-.sidebar__link.sair:hover { background: rgba(220,38,38,0.2); }
+.sidebar__link:hover {
+  background: #eff6ff;
+  color: var(--cor-acento);
+}
+.sidebar__link.sair { color: var(--cor-erro); }
+.sidebar__link.sair:hover { background: #fef2f2; color: var(--cor-erro); }
 
 /* ── Área principal ── */
 .chat-principal {
@@ -148,7 +164,6 @@
   gap: var(--espaco-2);
   font-size: 13px;
   color: var(--cor-texto-secundario);
-  cursor: pointer;
 }
 
 .avatar-iniciais {
@@ -162,13 +177,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 /* ── Área de mensagens ── */
 .chat-mensagens {
   flex: 1;
   overflow-y: auto;
-  padding: var(--espaco-6) var(--espaco-6);
+  padding: var(--espaco-6);
   display: flex;
   flex-direction: column;
   gap: var(--espaco-4);
@@ -202,7 +218,6 @@
   font-size: 14px;
   line-height: 1.6;
   box-shadow: var(--sombra-card);
-  white-space: pre-wrap;
 }
 
 .mensagem.usuario .mensagem__balao {
@@ -210,7 +225,18 @@
   color: var(--cor-branco);
 }
 
-/* ── Loading (3 pontinhos) ── */
+/* Markdown dentro das mensagens */
+.mensagem__balao p { margin-bottom: 8px; }
+.mensagem__balao p:last-child { margin-bottom: 0; }
+.mensagem__balao strong { font-weight: 700; }
+.mensagem__balao ul, .mensagem__balao ol {
+  padding-left: 20px;
+  margin-bottom: 8px;
+}
+.mensagem__balao li { margin-bottom: 4px; }
+.mensagem__balao a { color: var(--cor-acento); }
+
+/* ── Loading ── */
 .mensagem__loading {
   display: flex;
   gap: 4px;
@@ -324,18 +350,6 @@
   justify-content: center;
   flex-shrink: 0;
   transition: background 0.15s;
-  font-size: 16px;
 }
 .btn-enviar:hover:not(:disabled) { background: var(--cor-primaria-hover); }
 .btn-enviar:disabled { background: var(--cor-texto-terciario); cursor: not-allowed; }
-
-/* Estilo do markdown dentro das mensagens */
-.mensagem__balao p { margin-bottom: 8px; }
-.mensagem__balao p:last-child { margin-bottom: 0; }
-.mensagem__balao strong { font-weight: 700; }
-.mensagem__balao ul, .mensagem__balao ol {
-  padding-left: 20px;
-  margin-bottom: 8px;
-}
-.mensagem__balao li { margin-bottom: 4px; }
-.mensagem__balao a { color: var(--cor-acento); }

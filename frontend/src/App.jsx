@@ -6,6 +6,7 @@ import VerificarLogin from "./pages/Auth/VerificarLogin";
 import CriarConta from "./pages/Auth/CriarConta";
 import VerificarCadastro from "./pages/Auth/VerificarCadastro";
 import Chat from "./pages/Chat/Chat";
+import Perfil from "./pages/Perfil/Perfil";
 
 import "./styles/global.css";
 
@@ -19,13 +20,16 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          {/* Rotas públicas */}
           <Route path="/" element={<Navigate to="/entrar" replace />} />
           <Route path="/entrar" element={<Entrar />} />
           <Route path="/verificar-login" element={<VerificarLogin />} />
           <Route path="/cadastro" element={<CriarConta />} />
           <Route path="/verificar-cadastro" element={<VerificarCadastro />} />
 
+          {/* Rotas privadas */}
           <Route path="/chat" element={<RotaPrivada><Chat /></RotaPrivada>} />
+          <Route path="/perfil" element={<RotaPrivada><Perfil /></RotaPrivada>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

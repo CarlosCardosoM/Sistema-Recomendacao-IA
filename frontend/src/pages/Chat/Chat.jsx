@@ -9,8 +9,15 @@ import {
 import sabiaperfil from "../../assets/sabiaperfil.png";
 import "./Chat.css";
 import ReactMarkdown from "react-markdown";
+import {
+  Plus,
+  Trash2,
+  User,
+  Settings,
+  LogOut,
+  MessageSquare,
+} from "lucide-react";
 
-// Retorna as iniciais do nome (ex: "Carlos Eduardo" → "CE")
 function iniciais(nome = "") {
   return nome
     .split(" ")
@@ -20,7 +27,6 @@ function iniciais(nome = "") {
     .join("");
 }
 
-// Componente de recomendações que aparece abaixo da resposta
 function Recomendacoes({ lista }) {
   if (!lista || lista.length === 0) return null;
   return (
@@ -46,7 +52,6 @@ function Recomendacoes({ lista }) {
   );
 }
 
-// Componente de uma mensagem individual
 function Mensagem({ mensagem, nomeAluno }) {
   const eUsuario = mensagem.papel === "usuario";
   return (
@@ -56,7 +61,6 @@ function Mensagem({ mensagem, nomeAluno }) {
       ) : (
         <img src={sabiaperfil} alt="SabiÁ" className="mensagem__avatar" />
       )}
-
       <div>
         <div className="mensagem__balao">
           {eUsuario ? (
@@ -73,7 +77,6 @@ function Mensagem({ mensagem, nomeAluno }) {
   );
 }
 
-// Componente do indicador de "digitando..."
 function MensagemCarregando() {
   return (
     <div className="mensagem assistente">
@@ -100,14 +103,10 @@ export default function Chat() {
   const fimMensagensRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Inicia uma sessão ao entrar na tela
   useEffect(() => {
-    if (aluno?.email) {
-      criarNovaSessao();
-    }
+    if (aluno?.email) criarNovaSessao();
   }, []);
 
-  // Rola para o final sempre que chega uma nova mensagem
   useEffect(() => {
     fimMensagensRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [mensagens, carregando]);
@@ -116,16 +115,12 @@ export default function Chat() {
     try {
       const dados = await iniciarSessao(aluno.email);
       setSessaoId(dados.sessao_id);
-      setMensagens([]);
-
-      // Adiciona uma mensagem de boas-vindas local (não vem do backend)
       setMensagens([
         {
           papel: "assistente",
           conteudo: `Olá, ${aluno.nome}! Sou o Sabiá, seu assistente de aprendizado. Como posso te ajudar hoje?`,
         },
       ]);
-
       setSessoes((ant) => [
         { id: dados.sessao_id, titulo: `Sessão ${ant.length + 1}` },
         ...ant,
@@ -143,16 +138,10 @@ export default function Chat() {
     setTexto("");
     setCarregando(true);
 
-    // Adiciona a mensagem do usuário imediatamente na tela
-    setMensagens((ant) => [
-      ...ant,
-      { papel: "usuario", conteudo: pergunta },
-    ]);
+    setMensagens((ant) => [...ant, { papel: "usuario", conteudo: pergunta }]);
 
     try {
       const dados = await enviarPergunta(sessaoId, pergunta);
-
-      // Adiciona a resposta do assistente com as recomendações
       setMensagens((ant) => [
         ...ant,
         {
@@ -161,7 +150,7 @@ export default function Chat() {
           recomendacoes: dados.recomendacoes,
         },
       ]);
-    } catch (erro) {
+    } catch {
       setMensagens((ant) => [
         ...ant,
         {
@@ -176,7 +165,6 @@ export default function Chat() {
   }
 
   function aoTeclaPressionada(evento) {
-    // Enter envia, Shift+Enter quebra linha
     if (evento.key === "Enter" && !evento.shiftKey) {
       evento.preventDefault();
       aoEnviar(evento);
@@ -208,7 +196,8 @@ export default function Chat() {
           </div>
 
           <button className="btn-novo-chat" onClick={criarNovaSessao}>
-            + Novo chat
+            <Plus size={16} color="#2563eb" />
+            <span>Novo chat</span>
           </button>
         </div>
 
@@ -219,58 +208,56 @@ export default function Chat() {
               className={`sidebar__sessao-item ${s.id === sessaoId ? "ativo" : ""}`}
               onClick={() => setSessaoId(s.id)}
             >
-              💬 {s.titulo}
+              <MessageSquare size={15} color="#2563eb" />
+              <span>{s.titulo}</span>
             </button>
           ))}
         </nav>
 
         <div className="sidebar__rodape">
           <button className="sidebar__link" onClick={aoLimparChat}>
-            🗑️ Limpar chat
+            <Trash2 size={16} color="#2563eb" />
+            <span>Limpar chat</span>
           </button>
           <button className="sidebar__link" onClick={() => navegar("/perfil")}>
-            👤 Minha conta
+            <User size={16} color="#2563eb" />
+            <span>Minha conta</span>
           </button>
           <button className="sidebar__link" onClick={() => navegar("/configuracoes")}>
-            ⚙️ Configurações
+            <Settings size={16} color="#2563eb" />
+            <span>Configurações</span>
           </button>
           <button className="sidebar__link sair" onClick={aoSair}>
-            ↩ Sair
+            <LogOut size={16} color="#dc2626" />
+            <span>Sair</span>
           </button>
         </div>
       </aside>
 
       {/* ── Área principal ── */}
       <main className="chat-principal">
-
-        {/* Cabeçalho */}
         <header className="chat-header">
           <div className="chat-header__info">
-            <img src={sabiaperfil} alt="SabiÁ" className="chat-header__avatar" />
+            <img src={sabiaperfil} alt="Sabiá" className="chat-header__avatar" />
             <div>
-              <p className="chat-header__nome">SabiÁ</p>
+              <p className="chat-header__nome">Sabiá</p>
               <p className="chat-header__subtitulo">Apoio ao aprendizado de algoritmos de busca</p>
             </div>
           </div>
-
           <div className="chat-header__aluno">
             <div className="avatar-iniciais">{iniciais(aluno?.nome)}</div>
             <span>{aluno?.nome}</span>
           </div>
         </header>
 
-        {/* Mensagens */}
         <div className="chat-mensagens">
           {mensagens.map((msg, idx) => (
             <Mensagem key={idx} mensagem={msg} nomeAluno={aluno?.nome} />
           ))}
-
           {carregando && <MensagemCarregando />}
-
           <div ref={fimMensagensRef} />
         </div>
 
-        {/* Input */}
         <div className="chat-input-area">
           <form className="chat-input-form" onSubmit={aoEnviar}>
             <textarea
@@ -288,11 +275,10 @@ export default function Chat() {
               className="btn-enviar"
               disabled={!texto.trim() || carregando}
             >
-              ➤
+              <Plus size={18} color="#fff" style={{ transform: "rotate(45deg)" }} />
             </button>
           </form>
         </div>
-
       </main>
     </div>
   );
