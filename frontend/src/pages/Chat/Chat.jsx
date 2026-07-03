@@ -15,10 +15,21 @@ import "./Chat.css";
 import ReactMarkdown from "react-markdown";
 import { Plus, Trash2, User, LogOut, Send, Pencil, Check } from "lucide-react";
 
-const CHAVE_SESSOES = "sabia_sessoes";
+const CHAVE_SESSOES  = "sabia_sessoes";
+const CHAVE_CONTADOR = "sabia_contador_sessoes";
 
 function iniciais(nome = "") {
   return nome.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join("");
+}
+
+// ── Contador global de sessões criadas ──
+// Persiste no localStorage para nunca repetir o número
+// mesmo após limpar a lista de sessões
+function proximoNumeroSessao() {
+  const atual = parseInt(localStorage.getItem(CHAVE_CONTADOR) || "0", 10);
+  const proximo = atual + 1;
+  localStorage.setItem(CHAVE_CONTADOR, String(proximo));
+  return proximo;
 }
 
 function CardRecomendacao({ item, aluno }) {
@@ -182,12 +193,10 @@ export default function Chat() {
   const fimMensagensRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Persiste sessões no localStorage
   useEffect(() => {
     try { localStorage.setItem(CHAVE_SESSOES, JSON.stringify(sessoes)); } catch {}
   }, [sessoes]);
 
-  // Ao entrar, retoma última sessão ou cria nova
   useEffect(() => {
     if (!aluno?.email) return;
     if (sessoes.length > 0) {
@@ -219,8 +228,7 @@ export default function Chat() {
         })));
       }
     } catch {
-      // Sessão não existe mais no banco (ex: banco recriado)
-      // Limpa TODAS as sessões do localStorage e começa do zero
+      // Sessão não existe mais — limpa tudo e recomeça
       setSessoes([]);
       localStorage.removeItem(CHAVE_SESSOES);
       criarNovaSessao();
@@ -232,13 +240,15 @@ export default function Chat() {
   async function criarNovaSessao() {
     try {
       const dados = await iniciarSessao(aluno.email);
-      const novaSessao = { id: dados.sessao_id, titulo: `Sessão ${Date.now()}` };
+      // Usa contador global para nunca repetir o número da sessão
+      const numero = proximoNumeroSessao();
+      const novaSessao = { id: dados.sessao_id, titulo: `Sessão ${numero}` };
       setSessaoId(dados.sessao_id);
       setMensagens([{
         papel: "assistente",
         conteudo: `Olá, ${aluno.nome}! Sou o Sabiá, seu assistente de aprendizado. Como posso te ajudar hoje?`,
       }]);
-      setSessoes((ant) => [{ ...novaSessao, titulo: `Sessão ${ant.length + 1}` }, ...ant]);
+      setSessoes((ant) => [novaSessao, ...ant]);
     } catch (erro) {
       console.error("Erro ao criar sessão:", erro);
     }
@@ -282,6 +292,8 @@ export default function Chat() {
         {
           papel:         "assistente",
           conteudo:      dados.resposta,
+          // Usa recomendacoes da resposta em tempo real
+          // São mais completas que o histórico (inclui recomendacao_service)
           recomendacoes: dados.recomendacoes || [],
         },
       ]);

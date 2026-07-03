@@ -6,14 +6,16 @@ from database import Aluno, Conteudo, Interacao, Curtida
 from services.embedding_service import bytes_para_embedding
 from services.rag_service import calcular_similaridade
 
-# Pesos do scoreFinal — conforme o pseudocódigo original
-PESO_SIMILARIDADE  = 0.35
-PESO_PREFERENCIA   = 0.20
-PESO_CURTIDA       = 0.10
-PESO_HISTORICO     = 0.10
-PESO_TEMPO         = 0.10
-PESO_INTERACAO     = 0.05
-PESO_DIFICULDADE   = 0.10
+# ── Pesos do scoreFinal ───────────────────────────────────────────────────────
+# Similaridade semântica domina — garante que o conteúdo seja relevante
+# para a pergunta antes de considerar preferências e histórico do aluno
+PESO_SIMILARIDADE = 0.60  # ← aumentado de 0.35 para 0.60
+PESO_PREFERENCIA  = 0.15  # tipo de conteúdo preferido pelo aluno
+PESO_CURTIDA      = 0.08  # já curtiu esse conteúdo
+PESO_HISTORICO    = 0.05  # já interagiu com esse conteúdo antes
+PESO_TEMPO        = 0.04  # tempo de visualização normalizado
+PESO_INTERACAO    = 0.03  # engajamento geral com o sistema
+PESO_DIFICULDADE  = 0.05  # nível compatível com a pergunta
 
 TEMPO_REFERENCIA = 300  # 5 minutos
 SCORE_MINIMO_RECOMENDACAO = 0.30
@@ -42,47 +44,41 @@ def calcular_score(
     embedding_pergunta: np.ndarray,
     nivel_pergunta: str | None
 ) -> float:
-    """
-    Calcula o score final de relevância de um conteúdo para um aluno.
-    Combina 7 fatores ponderados conforme o pseudocódigo original.
-    """
-
-    # 1. Similaridade semântica entre a pergunta e o conteúdo
+    # 1. Similaridade semântica — fator dominante
     embedding_conteudo = bytes_para_embedding(conteudo.embeddings)
     score_similaridade = calcular_similaridade(embedding_pergunta, embedding_conteudo)
 
-    # 2. Preferência de tipo de conteúdo do aluno
+    # 2. Preferência de tipo de conteúdo
     score_preferencia = 0.0
     if aluno.preferencias_tipos and conteudo.tipo in aluno.preferencias_tipos.split(","):
         score_preferencia = 1.0
 
-    # 3. Se o aluno já curtiu esse conteúdo
+    # 3. Curtida
     curtida = db.query(Curtida).filter(
         Curtida.aluno_id == aluno.id,
         Curtida.conteudo_id == conteudo.id
     ).first()
     score_curtida = 1.0 if curtida else 0.0
 
-    # 4. Se o aluno já interagiu com esse conteúdo antes
+    # 4. Histórico de interação
     interacao_existente = db.query(Interacao).filter(
         Interacao.aluno_id == aluno.id,
         Interacao.conteudo_id == conteudo.id
     ).first()
     score_historico = 0.5 if interacao_existente else 0.0
 
-    # 5. Tempo de visualização normalizado
+    # 5. Tempo de visualização
     score_tempo = 0.0
     if interacao_existente:
         score_tempo = normalizar_tempo(interacao_existente.tempo_visualizacao)
 
-    # 6. Quantidade total de conteúdos que o aluno já abriu
-    # Este valor também define quantas recomendações serão exibidas
+    # 6. Engajamento geral
     quantidade_abertos = db.query(Interacao).filter(
         Interacao.aluno_id == aluno.id
     ).count()
     score_interacao = min(quantidade_abertos * 0.1, 1.0)
 
-    # 7. Compatibilidade de nível de dificuldade com a análise da pergunta
+    # 7. Compatibilidade de dificuldade
     score_dificuldade = 0.0
     if nivel_pergunta and normalizar_texto(nivel_pergunta) == normalizar_texto(conteudo.nivel_dificuldade):
         score_dificuldade = 1.0
@@ -105,18 +101,6 @@ def recomendar_conteudo(
     embedding_pergunta: np.ndarray,
     nivel_pergunta: str | None = None
 ) -> list[dict]:
-    """
-    Gera a lista de conteúdos recomendados para o aluno.
-
-    A quantidade de recomendações aumenta conforme o aluno
-    ABRE conteúdos recomendados (tabela Interacao) — quanto mais
-    o aluno interage com os conteúdos, mais recomendações recebe.
-
-    Lógica do pseudocódigo original:
-    - <= 2 conteúdos abertos → 1 recomendação  (aluno novo)
-    - <= 5 conteúdos abertos → 2 recomendações (engajamento médio)
-    - >  5 conteúdos abertos → 3 recomendações (aluno engajado)
-    """
     aluno = db.query(Aluno).filter(Aluno.email == email).first()
     if not aluno:
         return []
@@ -130,9 +114,7 @@ def recomendar_conteudo(
 
     lista_scores.sort(key=lambda x: x[1], reverse=True)
 
-    # ── Quantidade baseada em conteúdos ABERTOS (Interacao) ──
-    # O aluno usa POST /interacoes/abrir quando abre um conteúdo recomendado
-    # Cada abertura registra uma Interacao → aumenta as recomendações futuras
+    # Quantidade baseada em conteúdos abertos pelo aluno
     quantidade_abertos = db.query(Interacao).filter(
         Interacao.aluno_id == aluno.id
     ).count()
@@ -144,7 +126,7 @@ def recomendar_conteudo(
     else:
         quantidade_recomendacoes = 3
 
-    # Filtra por score mínimo — não recomenda conteúdo irrelevante
+    # Filtra por score mínimo
     top_recomendacoes = [
         (c, s) for c, s in lista_scores[:quantidade_recomendacoes]
         if s >= SCORE_MINIMO_RECOMENDACAO

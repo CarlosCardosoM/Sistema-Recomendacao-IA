@@ -37,7 +37,6 @@ def excluir_sessao(db: Session, sessao_id: int) -> dict:
     sessao = db.query(Sessao).filter(Sessao.id == sessao_id).first()
     if not sessao:
         raise HTTPException(status_code=404, detail="Sessão não encontrada.")
-
     mensagens = db.query(Mensagem).filter(Mensagem.sessao_id == sessao_id).all()
     for mensagem in mensagens:
         db.query(ChunkUsage).filter(ChunkUsage.mensagem_id == mensagem.id).delete()
@@ -48,32 +47,18 @@ def excluir_sessao(db: Session, sessao_id: int) -> dict:
 
 
 def responder_pergunta(db: Session, sessao_id: int, pergunta: str) -> dict:
-    """
-    Pipeline completo do chat:
-    1. Busca histórico da sessão
-    2. Processa RAG — classificação da pergunta define o threshold
-    3. Gera resposta + análise em paralelo
-    4. Salva mensagens no banco
-    5. Só gera recomendações se RAG encontrou conteúdos relevantes
-       → pergunta genérica = sem conteúdos = sem recomendações
-    """
     sessao = db.query(Sessao).filter(Sessao.id == sessao_id).first()
     if not sessao:
         raise HTTPException(status_code=404, detail="Sessão não encontrada.")
 
     aluno = db.query(Aluno).filter(Aluno.id == sessao.aluno_id).first()
 
-    # 1. Busca histórico
     historico_banco = db.query(Mensagem).filter(
         Mensagem.sessao_id == sessao_id
     ).order_by(Mensagem.criado_em).all()
 
-    # 2. Processa RAG
-    # classificar_pergunta() roda dentro de buscar_conteudos_relevantes()
-    # e define o threshold antes de buscar — resultado correto garantido
     resultado_rag = processar_pergunta(db, pergunta, historico_banco)
 
-    # 3. Gera resposta e análise em paralelo
     with ThreadPoolExecutor(max_workers=2) as executor:
         futuro_resposta = executor.submit(
             gerar_resposta,
@@ -85,7 +70,7 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str) -> dict:
         resposta = futuro_resposta.result()
         analise  = futuro_analise.result()
 
-    # 4. Salva a pergunta do aluno
+    # Salva pergunta do aluno
     mensagem_aluno = Mensagem(
         sessao_id          = sessao_id,
         papel              = "usuario",
@@ -97,18 +82,7 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str) -> dict:
     db.commit()
     db.refresh(mensagem_aluno)
 
-    # 5. Salva a resposta do assistente
-    mensagem_assistente = Mensagem(
-        sessao_id          = sessao_id,
-        papel              = "assistente",
-        conteudo           = resposta,
-        analise_pergunta   = None,
-        embedding_pergunta = None
-    )
-    db.add(mensagem_assistente)
-    db.commit()
-
-    # 6. Registra ChunkUsage apenas se encontrou conteúdos relevantes
+    # Registra ChunkUsage
     conteudos_relevantes = resultado_rag["conteudos_relevantes"]
     for conteudo, score in conteudos_relevantes:
         chunk = ChunkUsage(
@@ -119,9 +93,7 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str) -> dict:
         db.add(chunk)
     db.commit()
 
-    # 7. Só gera recomendações se o RAG encontrou conteúdos relevantes
-    # Se conteudos_relevantes estiver vazio, a pergunta foi classificada
-    # como genérica/saudação — não recomenda nada
+    # Gera recomendações personalizadas
     if not conteudos_relevantes:
         recomendacoes = []
     else:
@@ -132,6 +104,19 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str) -> dict:
             embedding_pergunta = embedding_pergunta,
             nivel_pergunta     = analise.get("nivel_dificuldade")
         )
+
+    # Salva resposta do assistente
+    # Guarda as recomendações no campo analise_pergunta da mensagem do assistente
+    # para recuperar corretamente no histórico sem perder dados
+    mensagem_assistente = Mensagem(
+        sessao_id          = sessao_id,
+        papel              = "assistente",
+        conteudo           = resposta,
+        analise_pergunta   = json.dumps(recomendacoes, ensure_ascii=False),
+        embedding_pergunta = None
+    )
+    db.add(mensagem_assistente)
+    db.commit()
 
     return {
         "resposta":             resposta,
@@ -157,45 +142,22 @@ def buscar_historico(db: Session, sessao_id: int) -> list:
         Mensagem.sessao_id == sessao_id
     ).order_by(Mensagem.criado_em).all()
 
-    resultado = []
+    historico = []
     for m in mensagens:
         mensagem_dict = {
-            "papel":     m.papel,
-            "conteudo":  m.conteudo,
-            "criado_em": str(m.criado_em),
+            "papel":    m.papel,
+            "conteudo": m.conteudo,
         }
 
-        if m.papel == "usuario":
-            chunks = db.query(ChunkUsage).filter(
-                ChunkUsage.mensagem_id == m.id
-            ).all()
-            if chunks:
-                recomendacoes = []
-                for chunk in chunks:
-                    conteudo = db.query(Conteudo).filter(
-                        Conteudo.id == chunk.conteudo_id
-                    ).first()
-                    if conteudo:
-                        recomendacoes.append({
-                            "conteudo_id": conteudo.id,
-                            "titulo":      conteudo.titulo,
-                            "tipo":        conteudo.tipo,
-                            "link":        conteudo.link,
-                            "score":       round(chunk.similaridade_score, 3)
-                        })
-                mensagem_dict["recomendacoes"] = recomendacoes
+        if m.papel == "assistente" and m.analise_pergunta:
+            # Recomendações ficam salvas no analise_pergunta da mensagem do assistente
+            try:
+                recomendacoes = json.loads(m.analise_pergunta)
+                if isinstance(recomendacoes, list):
+                    mensagem_dict["recomendacoes"] = recomendacoes
+            except Exception:
+                mensagem_dict["recomendacoes"] = []
 
-        resultado.append(mensagem_dict)
+        historico.append(mensagem_dict)
 
-    # Passa recomendações para a mensagem do assistente seguinte
-    historico_agrupado = []
-    for i, msg in enumerate(resultado):
-        if msg["papel"] == "usuario" and "recomendacoes" in msg:
-            recomendacoes = msg.pop("recomendacoes")
-            historico_agrupado.append(msg)
-            if i + 1 < len(resultado) and resultado[i + 1]["papel"] == "assistente":
-                resultado[i + 1]["recomendacoes"] = recomendacoes
-        else:
-            historico_agrupado.append(msg)
-
-    return historico_agrupado
+    return historico
