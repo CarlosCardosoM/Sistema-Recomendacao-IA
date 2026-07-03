@@ -6,7 +6,7 @@ from services.embedding_service import (
     gerar_embedding,
     bytes_para_embedding
 )
-from services.ollama_service import classificar_pergunta
+from services.ollama_service import classificar_pergunta, identificar_topico
 
 TOP_K = 3
 
@@ -15,6 +15,26 @@ THRESHOLD_TECNICO  = 0.45
 
 # Threshold para perguntas genéricas (fora do escopo mas não é saudação)
 THRESHOLD_GENERICO = 0.70
+
+# Margem de relevância relativa: descarta resultados muito piores que o
+# melhor match, para não "completar" o top_k com conteúdo fora do tópico
+MARGEM_RELEVANCIA = 0.12
+
+# Tópicos cadastrados no banco, com as variações (PT/EN) usadas em
+# topico_principal. A similaridade por embedding não discrimina bem
+# subtópicos próximos (ex.: "Busca Cega" x "Busca A*" ficam a ~0.01 de
+# distância), então usamos o LLM para identificar o tópico exato e
+# restringir a busca a ele antes de rankear por similaridade.
+TOPICOS_ALIASES = {
+    "Busca Cega":            ["Busca Cega", "Blind Search"],
+    "Busca Informada":       ["Busca Informada", "Informed Search"],
+    "Busca A*":              ["Busca A*", "A* Search"],
+    "Busca Gulosa":          ["Busca Gulosa", "Greedy Search"],
+    "Busca Custo Uniforme":  ["Busca Custo Uniforme", "Uniform Cost Search"],
+    "Busca em Largura":      ["Busca em Largura", "Breadth-First Search"],
+    "Busca em Profundidade": ["Busca em Profundidade", "Depth-First Search"],
+    "Busca Competitiva":     ["Busca Competitiva", "Competitive Search"],
+}
 
 
 def calcular_similaridade(vetor1: np.ndarray, vetor2: np.ndarray) -> float:
@@ -33,6 +53,7 @@ def buscar_conteudos_relevantes(
     db: Session,
     embedding_pergunta: np.ndarray,
     pergunta: str = "",
+    mensagens: list | None = None,
     top_k: int = TOP_K
 ) -> list[tuple]:
     """
@@ -45,11 +66,32 @@ def buscar_conteudos_relevantes(
     Vantagem: funciona com qualquer idioma e variação de texto,
     sem depender de listas fixas de palavras.
     """
-    # Classifica a pergunta usando o LLM
+    # Classifica a pergunta usando o LLM — sempre a pergunta crua, sem
+    # concatenar com o histórico: misturar texto (ex.: "Boa noite" +
+    # "Busca cega") dilui o sinal e derruba a classificação
     eh_tecnica = classificar_pergunta(pergunta) if pergunta else False
     threshold = THRESHOLD_TECNICO if eh_tecnica else THRESHOLD_GENERICO
 
     conteudos = db.query(Conteudo).filter(Conteudo.embeddings != None).all()
+
+    # Restringe ao tópico identificado pelo LLM, quando a pergunta apontar
+    # claramente para um — evita que o embedding "vaze" pra um subtópico
+    # vizinho só porque a similaridade textual é parecida. O histórico
+    # recente é passado como turnos separados (não concatenado) para que
+    # o LLM resolva referências ("esse algoritmo") sem se confundir com
+    # saudações ou mensagens irrelevantes.
+    if pergunta and eh_tecnica:
+        historico_recente = None
+        if mensagens:
+            historico_recente = [
+                {"role": m.papel, "content": m.conteudo} for m in mensagens[-4:]
+            ]
+        topico = identificar_topico(pergunta, list(TOPICOS_ALIASES.keys()), historico_recente)
+        if topico:
+            aliases = TOPICOS_ALIASES[topico]
+            candidatos_topico = [c for c in conteudos if c.topico_principal in aliases]
+            if candidatos_topico:
+                conteudos = candidatos_topico
 
     resultados = []
     for conteudo in conteudos:
@@ -59,6 +101,17 @@ def buscar_conteudos_relevantes(
             resultados.append((conteudo, score))
 
     resultados.sort(key=lambda x: x[1], reverse=True)
+    if not resultados:
+        return []
+
+    # Só mantém resultados próximos do melhor match — evita completar
+    # o top_k com conteúdo de outro tópico só porque passou do threshold
+    melhor_score = resultados[0][1]
+    resultados = [
+        (c, s) for c, s in resultados
+        if s >= melhor_score - MARGEM_RELEVANCIA
+    ]
+
     return resultados[:top_k]
 
 
@@ -95,13 +148,14 @@ def processar_pergunta(db: Session, pergunta: str, mensagens: list) -> dict:
     """
     Pipeline completo do RAG.
     """
-    # 1. Gera o embedding da pergunta
+    # 1. Gera o embedding da pergunta (sempre o texto original — ver
+    #    buscar_conteudos_relevantes para como o histórico é usado)
     vetor_pergunta = gerar_embedding(pergunta)
     embedding_bytes = vetor_pergunta.tobytes()
 
     # 2. Busca conteúdos com threshold dinâmico via LLM
     conteudos_relevantes = buscar_conteudos_relevantes(
-        db, vetor_pergunta, pergunta
+        db, vetor_pergunta, pergunta, mensagens
     )
 
     # 3. Monta contexto e histórico

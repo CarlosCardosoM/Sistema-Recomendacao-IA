@@ -8,7 +8,6 @@ from database import Aluno, Sessao, Mensagem, ChunkUsage, Conteudo
 from controllers.aluno_controller import buscar_aluno_por_email
 from services.rag_service import processar_pergunta
 from services.ollama_service import gerar_resposta, analisar_pergunta
-from services.embedding_service import bytes_para_embedding
 from services.recomendacao_service import recomendar_conteudo
 
 
@@ -97,12 +96,11 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str) -> dict:
     if not conteudos_relevantes:
         recomendacoes = []
     else:
-        embedding_pergunta = bytes_para_embedding(resultado_rag["embedding_pergunta"])
         recomendacoes = recomendar_conteudo(
-            db                 = db,
-            email              = aluno.email,
-            embedding_pergunta = embedding_pergunta,
-            nivel_pergunta     = analise.get("nivel_dificuldade")
+            db                   = db,
+            email                = aluno.email,
+            conteudos_relevantes = conteudos_relevantes,
+            nivel_pergunta       = analise.get("nivel_dificuldade")
         )
 
     # Salva resposta do assistente

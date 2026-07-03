@@ -1,10 +1,7 @@
 import unicodedata
-import numpy as np
 from sqlalchemy.orm import Session
 
 from database import Aluno, Conteudo, Interacao, Curtida
-from services.embedding_service import bytes_para_embedding
-from services.rag_service import calcular_similaridade
 
 # ── Pesos do scoreFinal ───────────────────────────────────────────────────────
 # Similaridade semântica domina — garante que o conteúdo seja relevante
@@ -41,12 +38,10 @@ def calcular_score(
     db: Session,
     aluno: Aluno,
     conteudo: Conteudo,
-    embedding_pergunta: np.ndarray,
+    score_similaridade: float,
     nivel_pergunta: str | None
 ) -> float:
-    # 1. Similaridade semântica — fator dominante
-    embedding_conteudo = bytes_para_embedding(conteudo.embeddings)
-    score_similaridade = calcular_similaridade(embedding_pergunta, embedding_conteudo)
+    # 1. Similaridade semântica — fator dominante (já calculada pelo RAG)
 
     # 2. Preferência de tipo de conteúdo
     score_preferencia = 0.0
@@ -98,18 +93,20 @@ def calcular_score(
 def recomendar_conteudo(
     db: Session,
     email: str,
-    embedding_pergunta: np.ndarray,
+    conteudos_relevantes: list[tuple[Conteudo, float]],
     nivel_pergunta: str | None = None
 ) -> list[dict]:
     aluno = db.query(Aluno).filter(Aluno.email == email).first()
     if not aluno:
         return []
 
-    candidatos = db.query(Conteudo).filter(Conteudo.embeddings != None).all()
-
+    # Personaliza apenas entre os conteúdos que o RAG já considerou
+    # semanticamente relevantes para a pergunta — nunca busca fora desse
+    # conjunto, para que preferência/curtida/histórico não puxem uma
+    # recomendação para um tópico diferente do que foi perguntado.
     lista_scores = []
-    for conteudo in candidatos:
-        score = calcular_score(db, aluno, conteudo, embedding_pergunta, nivel_pergunta)
+    for conteudo, score_similaridade in conteudos_relevantes:
+        score = calcular_score(db, aluno, conteudo, score_similaridade, nivel_pergunta)
         lista_scores.append((conteudo, score))
 
     lista_scores.sort(key=lambda x: x[1], reverse=True)

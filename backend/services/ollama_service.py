@@ -72,6 +72,75 @@ Pergunta: {pergunta}"""
         }
 
 
+def identificar_topico(
+    pergunta: str,
+    topicos: list[str],
+    historico_recente: list[dict] | None = None
+) -> str | None:
+    """
+    Pede ao LLM para escolher, dentre os tópicos já cadastrados no banco,
+    qual é o tópico específico da pergunta mais recente do aluno.
+
+    Existe porque a similaridade por embedding sozinha não discrimina bem
+    subtópicos próximos do mesmo domínio (ex.: "Busca Cega" e "Busca A*"
+    ficam a ~0.01 de distância no cosseno), o que fazia a busca por
+    conteúdo relevante escorregar para o tópico errado.
+
+    Recebe o histórico recente como turnos separados (não concatenado em
+    uma única string) para que o LLM possa distinguir saudações e mensagens
+    irrelevantes de perguntas de acompanhamento reais — concatenar texto
+    cru (ex.: "Boa noite" + "Busca cega") dilui o sinal e piora a resposta.
+
+    Retorna o nome exato do tópico ou None se a pergunta for genérica
+    demais para apontar um tópico específico.
+    """
+    lista_topicos = "\n".join(f"- {t}" for t in topicos)
+
+    bloco_historico = ""
+    if historico_recente:
+        linhas = "\n".join(
+            f"{'Aluno' if h['role'] == 'usuario' else 'Assistente'}: {h['content']}"
+            for h in historico_recente
+        )
+        bloco_historico = f"Histórico recente da conversa (apenas para contexto):\n{linhas}\n\n"
+
+    prompt = f"""{bloco_historico}A pergunta mais recente do aluno abaixo é sobre algoritmos de busca em
+Inteligência Artificial.
+
+Escolha, dentre a lista de tópicos abaixo, qual é o tópico específico ao qual
+a pergunta mais recente do aluno se refere. Use o histórico da conversa acima
+somente para entender o contexto (por exemplo, se a pergunta é uma resposta
+curta a algo que o assistente perguntou antes) — ignore saudações e mensagens
+sem relação com o assunto.
+
+Tópicos disponíveis:
+{lista_topicos}
+
+Se a pergunta não se referir claramente a nenhum desses tópicos específicos
+(por exemplo, uma pergunta genérica sobre "algoritmos de busca" em geral),
+responda exatamente: nenhum
+
+Responda APENAS com o nome exato do tópico da lista, ou "nenhum". Sem explicações.
+
+Pergunta mais recente do aluno: {pergunta}"""
+
+    try:
+        response = requests.post(OLLAMA_URL, json={
+            "model":    MODELO_ANALISE,
+            "messages": [{"role": "user", "content": prompt}],
+            "stream":   False
+        })
+        response.raise_for_status()
+        resposta = response.json()["message"]["content"].strip().lower()
+        for topico in topicos:
+            if topico.lower() in resposta:
+                return topico
+        return None
+    except Exception as e:
+        print("ERRO AO IDENTIFICAR TÓPICO:", e)
+        return None
+
+
 def classificar_pergunta(pergunta: str) -> bool:
     """
     Usa o LLM para decidir se a pergunta é técnica ou genérica.
