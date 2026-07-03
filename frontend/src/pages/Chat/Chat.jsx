@@ -227,11 +227,25 @@ export default function Chat() {
           recomendacoes: m.recomendacoes || [],
         })));
       }
-    } catch {
-      // Sessão não existe mais — limpa tudo e recomeça
-      setSessoes([]);
-      localStorage.removeItem(CHAVE_SESSOES);
-      criarNovaSessao();
+    } catch (erro) {
+      if (erro?.response?.status === 404) {
+        // Sessão de fato não existe mais no banco — remove só ela e recomeça
+        const novaLista = sessoes.filter((s) => s.id !== id);
+        setSessoes(novaLista);
+        if (novaLista.length > 0) {
+          carregarSessao(novaLista[0].id);
+        } else {
+          criarNovaSessao();
+        }
+      } else {
+        // Falha de rede/backend indisponível — não apaga o histórico local,
+        // apenas avisa e mantém a lista de sessões intacta
+        console.error("Erro ao carregar histórico:", erro);
+        setMensagens([{
+          papel: "assistente",
+          conteudo: "Não foi possível carregar esta conversa. Verifique se o servidor está rodando e tente novamente.",
+        }]);
+      }
     } finally {
       setCarregandoHistorico(false);
     }
