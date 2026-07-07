@@ -15,20 +15,28 @@ import "./Chat.css";
 import ReactMarkdown from "react-markdown";
 import { Plus, Trash2, User, LogOut, Send, Pencil, Check } from "lucide-react";
 
-const CHAVE_SESSOES  = "sabia_sessoes";
-const CHAVE_CONTADOR = "sabia_contador_sessoes";
+// Chaves isoladas por e-mail — cada conta tem sua própria lista de sessões
+// no localStorage, para trocar de conta no mesmo navegador não misturar
+// o histórico de uma pessoa com o de outra
+function chaveSessoes(email) {
+  return `sabia_sessoes_${email}`;
+}
+
+function chaveContador(email) {
+  return `sabia_contador_sessoes_${email}`;
+}
 
 function iniciais(nome = "") {
   return nome.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join("");
 }
 
-// ── Contador global de sessões criadas ──
+// ── Contador de sessões criadas por conta ──
 // Persiste no localStorage para nunca repetir o número
 // mesmo após limpar a lista de sessões
-function proximoNumeroSessao() {
-  const atual = parseInt(localStorage.getItem(CHAVE_CONTADOR) || "0", 10);
+function proximoNumeroSessao(chave) {
+  const atual = parseInt(localStorage.getItem(chave) || "0", 10);
   const proximo = atual + 1;
-  localStorage.setItem(CHAVE_CONTADOR, String(proximo));
+  localStorage.setItem(chave, String(proximo));
   return proximo;
 }
 
@@ -177,9 +185,12 @@ export default function Chat() {
   const { aluno, logout } = useAuth();
   const navegar = useNavigate();
 
+  const chaveSessoesAtual  = chaveSessoes(aluno?.email);
+  const chaveContadorAtual = chaveContador(aluno?.email);
+
   const [sessoes, setSessoes] = useState(() => {
     try {
-      const salvas = localStorage.getItem(CHAVE_SESSOES);
+      const salvas = localStorage.getItem(chaveSessoesAtual);
       return salvas ? JSON.parse(salvas) : [];
     } catch { return []; }
   });
@@ -194,8 +205,8 @@ export default function Chat() {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    try { localStorage.setItem(CHAVE_SESSOES, JSON.stringify(sessoes)); } catch {}
-  }, [sessoes]);
+    try { localStorage.setItem(chaveSessoesAtual, JSON.stringify(sessoes)); } catch {}
+  }, [sessoes, chaveSessoesAtual]);
 
   useEffect(() => {
     if (!aluno?.email) return;
@@ -214,7 +225,7 @@ export default function Chat() {
     setSessaoId(id);
     setCarregandoHistorico(true);
     try {
-      const historico = await buscarHistorico(id);
+      const historico = await buscarHistorico(id, aluno.email);
       if (historico.length === 0) {
         setMensagens([{
           papel: "assistente",
@@ -254,8 +265,8 @@ export default function Chat() {
   async function criarNovaSessao() {
     try {
       const dados = await iniciarSessao(aluno.email);
-      // Usa contador global para nunca repetir o número da sessão
-      const numero = proximoNumeroSessao();
+      // Usa contador por conta para nunca repetir o número da sessão
+      const numero = proximoNumeroSessao(chaveContadorAtual);
       const novaSessao = { id: dados.sessao_id, titulo: `Sessão ${numero}` };
       setSessaoId(dados.sessao_id);
       setMensagens([{
@@ -273,7 +284,7 @@ export default function Chat() {
   }
 
   async function aoExcluirSessao(id) {
-    try { await excluirSessao(id); } catch {}
+    try { await excluirSessao(id, aluno.email); } catch {}
     const novaLista = sessoes.filter((s) => s.id !== id);
     setSessoes(novaLista);
     if (id === sessaoId) {
@@ -300,7 +311,7 @@ export default function Chat() {
     setMensagens((ant) => [...ant, { papel: "usuario", conteudo: pergunta }]);
 
     try {
-      const dados = await enviarPergunta(sessaoId, pergunta);
+      const dados = await enviarPergunta(sessaoId, pergunta, aluno.email);
       setMensagens((ant) => [
         ...ant,
         {
@@ -330,7 +341,7 @@ export default function Chat() {
   }
 
   async function aoSair() {
-    if (sessaoId) { try { await encerrarSessao(sessaoId); } catch {} }
+    if (sessaoId) { try { await encerrarSessao(sessaoId, aluno.email); } catch {} }
     logout();
     navegar("/entrar");
   }

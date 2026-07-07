@@ -19,6 +19,7 @@ class IniciarSessaoRequest(BaseModel):
 
 class PerguntaRequest(BaseModel):
     pergunta: str
+    email: str
 
 
 @router.post("/sessao")
@@ -32,22 +33,22 @@ def criar_sessao(dados: IniciarSessaoRequest, db: Session = Depends(get_db)):
 
 
 @router.delete("/sessao/{sessao_id}/encerrar")
-def fechar_sessao(sessao_id: int, db: Session = Depends(get_db)):
+def fechar_sessao(sessao_id: int, email: str, db: Session = Depends(get_db)):
     """Encerra a sessão preenchendo data_hora_fim (mantém no banco)."""
-    return encerrar_sessao(db, sessao_id)
+    return encerrar_sessao(db, sessao_id, email)
 
 
 @router.delete("/sessao/{sessao_id}")
-def deletar_sessao(sessao_id: int, db: Session = Depends(get_db)):
+def deletar_sessao(sessao_id: int, email: str, db: Session = Depends(get_db)):
     """Exclui a sessão e todos os dados vinculados (mensagens e chunks)."""
-    return excluir_sessao(db, sessao_id)
+    return excluir_sessao(db, sessao_id, email)
 
 
 @router.post("/sessao/{sessao_id}/perguntar")
 def perguntar(sessao_id: int, dados: PerguntaRequest, db: Session = Depends(get_db)):
-    return responder_pergunta(db, sessao_id, dados.pergunta)
+    return responder_pergunta(db, sessao_id, dados.pergunta, dados.email)
 
 
 @router.get("/sessao/{sessao_id}/historico")
-def historico(sessao_id: int, db: Session = Depends(get_db)):
-    return buscar_historico(db, sessao_id)
+def historico(sessao_id: int, email: str, db: Session = Depends(get_db)):
+    return buscar_historico(db, sessao_id, email)

@@ -11,6 +11,25 @@ from services.ollama_service import gerar_resposta, analisar_pergunta
 from services.recomendacao_service import recomendar_conteudo
 
 
+def _buscar_sessao_do_aluno(db: Session, sessao_id: int, email: str) -> Sessao:
+    """
+    Busca a sessão e garante que ela pertence ao aluno do e-mail informado.
+
+    Sem essa checagem, qualquer sessao_id podia ser lido/alterado por
+    qualquer aluno (bastava saber ou adivinhar o id), vazando histórico
+    de conversa entre contas diferentes.
+    """
+    sessao = db.query(Sessao).filter(Sessao.id == sessao_id).first()
+    if not sessao:
+        raise HTTPException(status_code=404, detail="Sessão não encontrada.")
+
+    aluno = buscar_aluno_por_email(db, email)
+    if sessao.aluno_id != aluno.id:
+        raise HTTPException(status_code=403, detail="Você não tem permissão para acessar esta sessão.")
+
+    return sessao
+
+
 def iniciar_sessao(db: Session, email: str) -> Sessao:
     aluno = buscar_aluno_por_email(db, email)
     sessao = Sessao(
@@ -23,19 +42,15 @@ def iniciar_sessao(db: Session, email: str) -> Sessao:
     return sessao
 
 
-def encerrar_sessao(db: Session, sessao_id: int) -> dict:
-    sessao = db.query(Sessao).filter(Sessao.id == sessao_id).first()
-    if not sessao:
-        raise HTTPException(status_code=404, detail="Sessão não encontrada.")
+def encerrar_sessao(db: Session, sessao_id: int, email: str) -> dict:
+    sessao = _buscar_sessao_do_aluno(db, sessao_id, email)
     sessao.data_hora_fim = datetime.now()
     db.commit()
     return {"mensagem": "Sessão encerrada com sucesso."}
 
 
-def excluir_sessao(db: Session, sessao_id: int) -> dict:
-    sessao = db.query(Sessao).filter(Sessao.id == sessao_id).first()
-    if not sessao:
-        raise HTTPException(status_code=404, detail="Sessão não encontrada.")
+def excluir_sessao(db: Session, sessao_id: int, email: str) -> dict:
+    sessao = _buscar_sessao_do_aluno(db, sessao_id, email)
     mensagens = db.query(Mensagem).filter(Mensagem.sessao_id == sessao_id).all()
     for mensagem in mensagens:
         db.query(ChunkUsage).filter(ChunkUsage.mensagem_id == mensagem.id).delete()
@@ -45,12 +60,9 @@ def excluir_sessao(db: Session, sessao_id: int) -> dict:
     return {"mensagem": "Sessão excluída com sucesso."}
 
 
-def responder_pergunta(db: Session, sessao_id: int, pergunta: str) -> dict:
-    sessao = db.query(Sessao).filter(Sessao.id == sessao_id).first()
-    if not sessao:
-        raise HTTPException(status_code=404, detail="Sessão não encontrada.")
-
-    aluno = db.query(Aluno).filter(Aluno.id == sessao.aluno_id).first()
+def responder_pergunta(db: Session, sessao_id: int, pergunta: str, email: str) -> dict:
+    sessao = _buscar_sessao_do_aluno(db, sessao_id, email)
+    aluno  = db.query(Aluno).filter(Aluno.id == sessao.aluno_id).first()
 
     historico_banco = db.query(Mensagem).filter(
         Mensagem.sessao_id == sessao_id
@@ -131,10 +143,8 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str) -> dict:
     }
 
 
-def buscar_historico(db: Session, sessao_id: int) -> list:
-    sessao = db.query(Sessao).filter(Sessao.id == sessao_id).first()
-    if not sessao:
-        raise HTTPException(status_code=404, detail="Sessão não encontrada.")
+def buscar_historico(db: Session, sessao_id: int, email: str) -> list:
+    _buscar_sessao_do_aluno(db, sessao_id, email)
 
     mensagens = db.query(Mensagem).filter(
         Mensagem.sessao_id == sessao_id
