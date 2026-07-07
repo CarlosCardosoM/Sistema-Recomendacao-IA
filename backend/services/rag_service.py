@@ -6,7 +6,7 @@ from services.embedding_service import (
     gerar_embedding,
     bytes_para_embedding
 )
-from services.ollama_service import classificar_pergunta, identificar_topico
+from services.ollama_service import analisar_intencao
 
 TOP_K = 3
 
@@ -35,6 +35,9 @@ TOPICOS_ALIASES = {
     "Busca em Profundidade": ["Busca em Profundidade", "Depth-First Search"],
     "Busca Competitiva":     ["Busca Competitiva", "Competitive Search"],
 }
+
+# Tipos de conteúdo cadastrados no banco (ver Conteudo.tipo)
+TIPOS_DISPONIVEIS = ["atividade", "video", "artigo", "livro", "codigo"]
 
 
 def calcular_similaridade(vetor1: np.ndarray, vetor2: np.ndarray) -> float:
@@ -66,32 +69,44 @@ def buscar_conteudos_relevantes(
     Vantagem: funciona com qualquer idioma e variação de texto,
     sem depender de listas fixas de palavras.
     """
-    # Classifica a pergunta usando o LLM — sempre a pergunta crua, sem
-    # concatenar com o histórico: misturar texto (ex.: "Boa noite" +
-    # "Busca cega") dilui o sinal e derruba a classificação
-    eh_tecnica = classificar_pergunta(pergunta) if pergunta else False
+    # Uma única chamada ao LLM decide: é técnica (threshold baixo) ou
+    # genérica (threshold alto)? aponta pra um tópico específico? pede um
+    # tipo de conteúdo específico (ex.: atividade)? Sempre a pergunta crua,
+    # sem concatenar com o histórico: misturar texto (ex.: "Boa noite" +
+    # "Busca cega") dilui o sinal e derruba a classificação. O histórico
+    # recente entra como turnos separados só pra resolver referências
+    # ("esse algoritmo") sem se confundir com saudações irrelevantes.
+    historico_recente = None
+    if mensagens:
+        historico_recente = [
+            {"role": m.papel, "content": m.conteudo} for m in mensagens[-4:]
+        ]
+
+    intencao = (
+        analisar_intencao(pergunta, list(TOPICOS_ALIASES.keys()), TIPOS_DISPONIVEIS, historico_recente)
+        if pergunta else {"tecnica": False, "topico": None, "tipo": None}
+    )
+    eh_tecnica = intencao["tecnica"]
     threshold = THRESHOLD_TECNICO if eh_tecnica else THRESHOLD_GENERICO
 
     conteudos = db.query(Conteudo).filter(Conteudo.embeddings != None).all()
 
-    # Restringe ao tópico identificado pelo LLM, quando a pergunta apontar
+    # Restringe ao tópico identificado, quando a pergunta apontar
     # claramente para um — evita que o embedding "vaze" pra um subtópico
-    # vizinho só porque a similaridade textual é parecida. O histórico
-    # recente é passado como turnos separados (não concatenado) para que
-    # o LLM resolva referências ("esse algoritmo") sem se confundir com
-    # saudações ou mensagens irrelevantes.
-    if pergunta and eh_tecnica:
-        historico_recente = None
-        if mensagens:
-            historico_recente = [
-                {"role": m.papel, "content": m.conteudo} for m in mensagens[-4:]
-            ]
-        topico = identificar_topico(pergunta, list(TOPICOS_ALIASES.keys()), historico_recente)
-        if topico:
-            aliases = TOPICOS_ALIASES[topico]
-            candidatos_topico = [c for c in conteudos if c.topico_principal in aliases]
-            if candidatos_topico:
-                conteudos = candidatos_topico
+    # vizinho só porque a similaridade textual é parecida.
+    if intencao["topico"]:
+        aliases = TOPICOS_ALIASES[intencao["topico"]]
+        candidatos_topico = [c for c in conteudos if c.topico_principal in aliases]
+        if candidatos_topico:
+            conteudos = candidatos_topico
+
+    # Restringe ao tipo de conteúdo pedido (ex.: "atividades sobre X"),
+    # senão a busca mistura artigo/vídeo/livro junto com o exercício
+    # prático que o aluno pediu de fato
+    if intencao["tipo"]:
+        candidatos_tipo = [c for c in conteudos if c.tipo == intencao["tipo"]]
+        if candidatos_tipo:
+            conteudos = candidatos_tipo
 
     resultados = []
     for conteudo in conteudos:

@@ -28,6 +28,20 @@ def normalizar_texto(texto: str | None) -> str | None:
     return texto_sem_acento.lower().strip()
 
 
+# O cadastro guarda a preferência com o rótulo do frontend ("Exercício"),
+# mas o catálogo de conteúdo usa "atividade" em Conteudo.tipo — sem esse
+# alias, a preferência por exercícios nunca batia com nada e o peso de
+# preferência ficava sempre zerado
+ALIAS_TIPO_PREFERENCIA = {
+    "exercicio": "atividade",
+}
+
+
+def _tipo_normalizado(tipo: str) -> str:
+    tipo_norm = normalizar_texto(tipo)
+    return ALIAS_TIPO_PREFERENCIA.get(tipo_norm, tipo_norm)
+
+
 def normalizar_tempo(tempo_segundos: float | None) -> float:
     if tempo_segundos is None:
         return 0.0
@@ -45,8 +59,10 @@ def calcular_score(
 
     # 2. Preferência de tipo de conteúdo
     score_preferencia = 0.0
-    if aluno.preferencias_tipos and conteudo.tipo in aluno.preferencias_tipos.split(","):
-        score_preferencia = 1.0
+    if aluno.preferencias_tipos:
+        preferencias = {_tipo_normalizado(t) for t in aluno.preferencias_tipos.split(",")}
+        if normalizar_texto(conteudo.tipo) in preferencias:
+            score_preferencia = 1.0
 
     # 3. Curtida
     curtida = db.query(Curtida).filter(

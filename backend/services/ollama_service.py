@@ -7,9 +7,7 @@ MODELO_ANALISE = "llama3.2"
 
 
 def gerar_resposta(pergunta: str, contexto: str, historico: list) -> str:
-    """
-    Envia a pergunta ao EduBot com o contexto do RAG e histórico da conversa.
-    """
+
     mensagem_com_contexto = f"""Contexto com conteúdos relevantes:
 {contexto}
 
@@ -23,7 +21,11 @@ Pergunta do aluno:
     response = requests.post(OLLAMA_URL, json={
         "model":    MODELO_CHAT,
         "messages": mensagens,
-        "stream":   False
+        "stream":   False,
+        # Limita o tamanho da resposta — sem isso, uma geração que entra em
+        # loop de repetição nunca para sozinha e trava o único slot de
+        # execução do Ollama, deixando toda pergunta seguinte na fila.
+        "options":  {"num_predict": 700}
     })
     response.raise_for_status()
     return response.json()["message"]["content"]
@@ -51,7 +53,8 @@ Pergunta: {pergunta}"""
             "model":    MODELO_ANALISE,
             "messages": [{"role": "user", "content": prompt}],
             "format":   "json",
-            "stream":   False
+            "stream":   False,
+            "options":  {"num_predict": 150}
         })
         response.raise_for_status()
         conteudo = response.json()["message"]["content"]
@@ -72,29 +75,28 @@ Pergunta: {pergunta}"""
         }
 
 
-def identificar_topico(
+def analisar_intencao(
     pergunta: str,
     topicos: list[str],
+    tipos: list[str],
     historico_recente: list[dict] | None = None
-) -> str | None:
+) -> dict:
     """
-    Pede ao LLM para escolher, dentre os tópicos já cadastrados no banco,
-    qual é o tópico específico da pergunta mais recente do aluno.
-
-    Existe porque a similaridade por embedding sozinha não discrimina bem
-    subtópicos próximos do mesmo domínio (ex.: "Busca Cega" e "Busca A*"
-    ficam a ~0.01 de distância no cosseno), o que fazia a busca por
-    conteúdo relevante escorregar para o tópico errado.
+    Uma única chamada ao LLM que substitui três chamadas separadas
+    (classificar técnica/genérica, identificar tópico, identificar tipo
+    de conteúdo pedido). Antes cada uma era um roundtrip sequencial ao
+    Ollama só pra montar a busca — juntas, adicionavam vários segundos de
+    espera por pergunta. Aqui tudo sai em um JSON só.
 
     Recebe o histórico recente como turnos separados (não concatenado em
     uma única string) para que o LLM possa distinguir saudações e mensagens
     irrelevantes de perguntas de acompanhamento reais — concatenar texto
     cru (ex.: "Boa noite" + "Busca cega") dilui o sinal e piora a resposta.
 
-    Retorna o nome exato do tópico ou None se a pergunta for genérica
-    demais para apontar um tópico específico.
+    Retorna {"tecnica": bool, "topico": str|None, "tipo": str|None}.
     """
     lista_topicos = "\n".join(f"- {t}" for t in topicos)
+    lista_tipos    = "\n".join(f"- {t}" for t in tipos)
 
     bloco_historico = ""
     if historico_recente:
@@ -104,72 +106,61 @@ def identificar_topico(
         )
         bloco_historico = f"Histórico recente da conversa (apenas para contexto):\n{linhas}\n\n"
 
-    prompt = f"""{bloco_historico}A pergunta mais recente do aluno abaixo é sobre algoritmos de busca em
-Inteligência Artificial.
+    prompt = f"""{bloco_historico}Analise a pergunta mais recente do aluno abaixo e responda APENAS com um
+JSON válido, sem nenhum texto antes ou depois, no formato exato:
 
-Escolha, dentre a lista de tópicos abaixo, qual é o tópico específico ao qual
-a pergunta mais recente do aluno se refere. Use o histórico da conversa acima
-somente para entender o contexto (por exemplo, se a pergunta é uma resposta
-curta a algo que o assistente perguntou antes) — ignore saudações e mensagens
-sem relação com o assunto.
+{{
+  "tecnica": true ou false,
+  "topico": "nome exato de um tópico da lista, ou null",
+  "tipo": "nome exato de um tipo da lista, ou null"
+}}
 
+"tecnica": true se a pergunta for sobre algoritmos de busca, inteligência
+artificial, grafos, código, programação ou conteúdo educacional de
+computação; false se for saudação ou assunto fora desse escopo.
+
+"topico": escolha dentre a lista abaixo qual é o tópico específico ao qual
+a pergunta se refere (use o histórico da conversa só para entender
+referências, ex.: uma resposta curta a algo que o assistente perguntou
+antes). Se não apontar claramente pra um tópico específico, use null.
 Tópicos disponíveis:
 {lista_topicos}
 
-Se a pergunta não se referir claramente a nenhum desses tópicos específicos
-(por exemplo, uma pergunta genérica sobre "algoritmos de busca" em geral),
-responda exatamente: nenhum
-
-Responda APENAS com o nome exato do tópico da lista, ou "nenhum". Sem explicações.
+"tipo": escolha dentre a lista abaixo qual tipo de conteúdo o aluno está
+pedindo (ex.: "me indique atividades sobre X" → atividade). Se a pergunta
+não pedir um tipo específico, use null.
+Tipos disponíveis:
+{lista_tipos}
 
 Pergunta mais recente do aluno: {pergunta}"""
 
-    try:
-        response = requests.post(OLLAMA_URL, json={
-            "model":    MODELO_ANALISE,
-            "messages": [{"role": "user", "content": prompt}],
-            "stream":   False
-        })
-        response.raise_for_status()
-        resposta = response.json()["message"]["content"].strip().lower()
-        for topico in topicos:
-            if topico.lower() in resposta:
-                return topico
-        return None
-    except Exception as e:
-        print("ERRO AO IDENTIFICAR TÓPICO:", e)
-        return None
-
-
-def classificar_pergunta(pergunta: str) -> bool:
-    """
-    Usa o LLM para decidir se a pergunta é técnica ou genérica.
-
-    Retorna True  → pergunta técnica (busca no RAG com threshold baixo)
-    Retorna False → saudação ou mensagem genérica (sem recomendação)
-
-    Vantagem sobre lista de palavras: funciona com qualquer idioma,
-    gírias, variações ortográficas e frases que não estão em listas fixas.
-    Em caso de erro, assume True para não bloquear perguntas legítimas.
-    """
-    prompt = f"""Responda APENAS com "sim" ou "nao", sem nenhum outro texto.
-
-A pergunta abaixo é sobre algoritmos de busca, inteligência artificial,
-grafos, código, programação ou conteúdo educacional de computação?
-
-Pergunta: {pergunta}
-
-Responda apenas: sim ou nao"""
+    padrao = {"tecnica": True, "topico": None, "tipo": None}
 
     try:
         response = requests.post(OLLAMA_URL, json={
             "model":    MODELO_ANALISE,
             "messages": [{"role": "user", "content": prompt}],
-            "stream":   False
+            "format":   "json",
+            "stream":   False,
+            "options":  {"num_predict": 100}
         })
         response.raise_for_status()
-        resposta = response.json()["message"]["content"].strip().lower()
-        return "sim" in resposta
+        resultado = json.loads(response.json()["message"]["content"])
+
+        def _casar(valor, opcoes):
+            if not isinstance(valor, str):
+                return None
+            valor_norm = valor.strip().lower()
+            return next((o for o in opcoes if o.lower() == valor_norm), None)
+
+        topico = _casar(resultado.get("topico"), topicos)
+        tipo   = _casar(resultado.get("tipo"), tipos)
+
+        return {
+            "tecnica": bool(resultado.get("tecnica", True)),
+            "topico":  topico,
+            "tipo":    tipo,
+        }
     except Exception as e:
-        print("ERRO NA CLASSIFICAÇÃO DA PERGUNTA:", e)
-        return True  # em caso de erro, assume técnica e busca normalmente
+        print("ERRO AO ANALISAR INTENÇÃO DA PERGUNTA:", e)
+        return padrao
