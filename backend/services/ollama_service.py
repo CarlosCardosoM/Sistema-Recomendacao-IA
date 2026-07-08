@@ -126,11 +126,22 @@ antes). Se não apontar claramente pra um tópico específico, use null.
 Tópicos disponíveis:
 {lista_topicos}
 
-"tipo": escolha dentre a lista abaixo qual tipo de conteúdo o aluno está
-pedindo (ex.: "me indique atividades sobre X" → atividade). Se a pergunta
-não pedir um tipo específico, use null.
+"tipo": null é o valor mais comum — a GRANDE maioria das perguntas não pede
+um tipo de conteúdo específico e deve usar null. Só preencha um tipo da
+lista quando o aluno pedir explicitamente por aquele formato de material
+(a própria palavra ou um sinônimo direto dela aparece na pergunta).
 Tipos disponíveis:
 {lista_tipos}
+
+Exemplos:
+- "O que é busca em largura?" → null (pergunta teórica, não pede formato)
+- "Como funciona o algoritmo A*?" → null (pergunta teórica)
+- "Quais as vantagens da busca gulosa?" → null (pergunta teórica)
+- "Me indique atividades/exercícios sobre busca cega" → atividade (pediu exercício explicitamente)
+- "Tem algum vídeo sobre isso?" → video (pediu vídeo explicitamente)
+- "Quero um artigo pra ler sobre o assunto" → artigo (pediu artigo explicitamente)
+
+Na dúvida, use null.
 
 Pergunta mais recente do aluno: {pergunta}"""
 
@@ -156,8 +167,14 @@ Pergunta mais recente do aluno: {pergunta}"""
         topico = _casar(resultado.get("topico"), topicos)
         tipo   = _casar(resultado.get("tipo"), tipos)
 
+        # Se um tópico específico do curso foi identificado, a pergunta já
+        # é técnica por definição — não depende só do campo solto "tecnica",
+        # que o modelo às vezes erra por ruído (modelo pequeno, roda na CPU)
+        # mesmo quando acerta o tópico na mesma resposta.
+        eh_tecnica = bool(resultado.get("tecnica", True)) or topico is not None
+
         return {
-            "tecnica": bool(resultado.get("tecnica", True)),
+            "tecnica": eh_tecnica,
             "topico":  topico,
             "tipo":    tipo,
         }

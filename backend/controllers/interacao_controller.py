@@ -76,7 +76,6 @@ def listar_interacoes_aluno(db: Session, email: str) -> list:
 def contar_conteudos_abertos(db: Session, email: str) -> int:
     """
     Conta quantos conteúdos o aluno já abriu.
-    Equivalente ao quantidadeConteudosAbertos do pseudocódigo.
     """
     aluno = buscar_aluno_por_email(db, email)
     return db.query(Interacao).filter(Interacao.aluno_id == aluno.id).count()

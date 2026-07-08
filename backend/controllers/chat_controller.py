@@ -12,13 +12,7 @@ from services.recomendacao_service import recomendar_conteudo
 
 
 def _buscar_sessao_do_aluno(db: Session, sessao_id: int, email: str) -> Sessao:
-    """
-    Busca a sessão e garante que ela pertence ao aluno do e-mail informado.
-
-    Sem essa checagem, qualquer sessao_id podia ser lido/alterado por
-    qualquer aluno (bastava saber ou adivinhar o id), vazando histórico
-    de conversa entre contas diferentes.
-    """
+   
     sessao = db.query(Sessao).filter(Sessao.id == sessao_id).first()
     if not sessao:
         raise HTTPException(status_code=404, detail="Sessão não encontrada.")
@@ -104,14 +98,17 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str, email: str) -
         db.add(chunk)
     db.commit()
 
-    # Gera recomendações personalizadas
-    if not conteudos_relevantes:
+    # Gera recomendações personalizadas — usa o pool amplo de candidatos
+    # (não só os 3 do contexto do LLM), pra preferência de tipo do aluno ter
+    # opções de sobra pra escolher dentro do que já é relevante pra pergunta
+    candidatos_recomendacao = resultado_rag["candidatos_recomendacao"]
+    if not candidatos_recomendacao:
         recomendacoes = []
     else:
         recomendacoes = recomendar_conteudo(
             db                   = db,
             email                = aluno.email,
-            conteudos_relevantes = conteudos_relevantes,
+            conteudos_relevantes = candidatos_recomendacao,
             nivel_pergunta       = analise.get("nivel_dificuldade")
         )
 

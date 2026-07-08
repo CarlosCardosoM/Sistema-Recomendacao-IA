@@ -16,6 +16,7 @@ PESO_DIFICULDADE  = 0.05  # nível compatível com a pergunta
 
 TEMPO_REFERENCIA = 300  # 5 minutos
 SCORE_MINIMO_RECOMENDACAO = 0.30
+TOP_K_RECOMENDACOES = 3  # quantidade sempre buscada, desde a 1ª pergunta do aluno
 
 
 def normalizar_texto(texto: str | None) -> str | None:
@@ -42,6 +43,24 @@ def _tipo_normalizado(tipo: str) -> str:
     return ALIAS_TIPO_PREFERENCIA.get(tipo_norm, tipo_norm)
 
 
+def _combina_com_preferencia(conteudo: Conteudo, aluno: Aluno) -> bool:
+    if not aluno.preferencias_tipos:
+        return False
+    preferencias = {_tipo_normalizado(t) for t in aluno.preferencias_tipos.split(",")}
+    return normalizar_texto(conteudo.tipo) in preferencias
+
+
+def _tipos_preferidos_normalizados(aluno: Aluno) -> list[str]:
+    if not aluno.preferencias_tipos:
+        return []
+    tipos = []
+    for t in aluno.preferencias_tipos.split(","):
+        tipo = _tipo_normalizado(t)
+        if tipo and tipo not in tipos:
+            tipos.append(tipo)
+    return tipos
+
+
 def normalizar_tempo(tempo_segundos: float | None) -> float:
     if tempo_segundos is None:
         return 0.0
@@ -58,11 +77,7 @@ def calcular_score(
     # 1. Similaridade semântica — fator dominante (já calculada pelo RAG)
 
     # 2. Preferência de tipo de conteúdo
-    score_preferencia = 0.0
-    if aluno.preferencias_tipos:
-        preferencias = {_tipo_normalizado(t) for t in aluno.preferencias_tipos.split(",")}
-        if normalizar_texto(conteudo.tipo) in preferencias:
-            score_preferencia = 1.0
+    score_preferencia = 1.0 if _combina_com_preferencia(conteudo, aluno) else 0.0
 
     # 3. Curtida
     curtida = db.query(Curtida).filter(
@@ -106,6 +121,64 @@ def calcular_score(
     return score_final
 
 
+def _selecionar_com_preferencia_e_diversidade(
+    elegiveis: list[tuple[Conteudo, float]],
+    aluno: Aluno
+) -> list[tuple[Conteudo, float]]:
+    """
+    Monta a lista final de recomendações a partir dos candidatos elegíveis
+    (já ordenados por score, do melhor pro pior).
+
+    O peso de preferência no score (PESO_PREFERENCIA) sozinho não garante
+    que o tipo preferido do aluno apareça: se a similaridade semântica de
+    outros tipos for maior, o vídeo preferido pode nunca entrar no top-3.
+    Por isso a seleção é feita em duas etapas:
+      1. Reserva a(s) primeira(s) vaga(s) pro melhor conteúdo elegível de
+         cada tipo que o aluno marcou como preferência no cadastro.
+      2. Preenche o restante priorizando tipos ainda não presentes na
+         lista (diversidade de mídia), e só repete tipo se não houver
+         mais opção elegível de um tipo novo.
+    """
+    tipos_preferidos = _tipos_preferidos_normalizados(aluno)
+    selecionados: list[tuple[Conteudo, float]] = []
+    ids_selecionados: set[int] = set()
+
+    for tipo_pref in tipos_preferidos:
+        if len(selecionados) >= TOP_K_RECOMENDACOES:
+            break
+        melhor = next(
+            (
+                item for item in elegiveis
+                if item[0].id not in ids_selecionados
+                and _tipo_normalizado(item[0].tipo) == tipo_pref
+            ),
+            None
+        )
+        if melhor:
+            selecionados.append(melhor)
+            ids_selecionados.add(melhor[0].id)
+
+    tipos_presentes = {_tipo_normalizado(c.tipo) for c, _ in selecionados}
+    for conteudo, score in elegiveis:
+        if len(selecionados) >= TOP_K_RECOMENDACOES:
+            break
+        if conteudo.id in ids_selecionados or _tipo_normalizado(conteudo.tipo) in tipos_presentes:
+            continue
+        selecionados.append((conteudo, score))
+        ids_selecionados.add(conteudo.id)
+        tipos_presentes.add(_tipo_normalizado(conteudo.tipo))
+
+    for conteudo, score in elegiveis:
+        if len(selecionados) >= TOP_K_RECOMENDACOES:
+            break
+        if conteudo.id in ids_selecionados:
+            continue
+        selecionados.append((conteudo, score))
+        ids_selecionados.add(conteudo.id)
+
+    return selecionados
+
+
 def recomendar_conteudo(
     db: Session,
     email: str,
@@ -125,25 +198,22 @@ def recomendar_conteudo(
         score = calcular_score(db, aluno, conteudo, score_similaridade, nivel_pergunta)
         lista_scores.append((conteudo, score))
 
+    # Ordena por score: relevância pra pergunta primeiro (0.60, dominante),
+    # preferência de tipo em seguida (0.15) desempata entre conteúdos já
+    # comparáveis em relevância. Funciona de verdade porque
+    # conteudos_relevantes agora chega com um pool mais amplo de candidatos
+    # (ver rag_service.TOP_K_CANDIDATOS) — antes só os 3 melhores por
+    # similaridade bruta chegavam aqui, e se nenhum fosse do tipo preferido
+    # do aluno não havia o que escolher. A ordenação por score sozinha ainda
+    # não garante que o tipo preferido apareça (ver
+    # _selecionar_com_preferencia_e_diversidade), só define a prioridade
+    # dentro de cada etapa da seleção.
     lista_scores.sort(key=lambda x: x[1], reverse=True)
 
-    # Quantidade baseada em conteúdos abertos pelo aluno
-    quantidade_abertos = db.query(Interacao).filter(
-        Interacao.aluno_id == aluno.id
-    ).count()
+    # Só o que passou do score mínimo entra na disputa pelas vagas
+    elegiveis = [(c, s) for c, s in lista_scores if s >= SCORE_MINIMO_RECOMENDACAO]
 
-    if quantidade_abertos <= 2:
-        quantidade_recomendacoes = 1
-    elif quantidade_abertos <= 5:
-        quantidade_recomendacoes = 2
-    else:
-        quantidade_recomendacoes = 3
-
-    # Filtra por score mínimo
-    top_recomendacoes = [
-        (c, s) for c, s in lista_scores[:quantidade_recomendacoes]
-        if s >= SCORE_MINIMO_RECOMENDACAO
-    ]
+    top_recomendacoes = _selecionar_com_preferencia_e_diversidade(elegiveis, aluno)
 
     return [
         {

@@ -8,7 +8,8 @@ from services.embedding_service import (
 )
 from services.ollama_service import analisar_intencao
 
-TOP_K = 3
+TOP_K_CONTEXTO = 3       # quantos conteúdos vão no prompt do LLM (resposta)
+TOP_K_CANDIDATOS = 8     # pool mais amplo, só pra recomendação escolher de dentro
 
 # Threshold para perguntas técnicas (sobre algoritmos, código, etc.)
 THRESHOLD_TECNICO  = 0.45
@@ -57,7 +58,7 @@ def buscar_conteudos_relevantes(
     embedding_pergunta: np.ndarray,
     pergunta: str = "",
     mensagens: list | None = None,
-    top_k: int = TOP_K
+    top_k: int = TOP_K_CANDIDATOS
 ) -> list[tuple]:
     """
     Busca os conteúdos mais similares à pergunta no banco.
@@ -162,24 +163,38 @@ def montar_historico(mensagens: list) -> list[dict]:
 def processar_pergunta(db: Session, pergunta: str, mensagens: list) -> dict:
     """
     Pipeline completo do RAG.
+
+    Retorna dois conjuntos de conteúdos relevantes com propósitos diferentes:
+    - "conteudos_relevantes": só os TOP_K_CONTEXTO melhores por similaridade —
+      vai no prompt do LLM e na auditoria (ChunkUsage). Mantido pequeno pra
+      não inflar o contexto nem o tempo de geração.
+    - "candidatos_recomendacao": um pool mais amplo (TOP_K_CANDIDATOS), ainda
+      dentro do mesmo tópico/tipo validados pela intenção da pergunta, pra
+      recomendacao_service ter opções reais de sobra ao aplicar a preferência
+      do aluno — sem isso, se o tipo preferido do aluno não estivesse entre
+      os 3 melhores por similaridade bruta, a preferência nunca tinha o que
+      escolher.
     """
     # 1. Gera o embedding da pergunta (sempre o texto original — ver
     #    buscar_conteudos_relevantes para como o histórico é usado)
     vetor_pergunta = gerar_embedding(pergunta)
     embedding_bytes = vetor_pergunta.tobytes()
 
-    # 2. Busca conteúdos com threshold dinâmico via LLM
-    conteudos_relevantes = buscar_conteudos_relevantes(
+    # 2. Busca o pool amplo de candidatos relevantes (mesma pergunta,
+    #    mesmo tópico/tipo) com threshold dinâmico via LLM
+    candidatos_recomendacao = buscar_conteudos_relevantes(
         db, vetor_pergunta, pergunta, mensagens
     )
+    conteudos_relevantes = candidatos_recomendacao[:TOP_K_CONTEXTO]
 
     # 3. Monta contexto e histórico
     contexto  = montar_contexto(conteudos_relevantes)
     historico = montar_historico(mensagens)
 
     return {
-        "embedding_pergunta":   embedding_bytes,
-        "conteudos_relevantes": conteudos_relevantes,
-        "contexto":             contexto,
-        "historico":            historico,
+        "embedding_pergunta":      embedding_bytes,
+        "conteudos_relevantes":    conteudos_relevantes,
+        "candidatos_recomendacao": candidatos_recomendacao,
+        "contexto":                contexto,
+        "historico":               historico,
     }
