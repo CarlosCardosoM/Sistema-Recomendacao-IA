@@ -6,15 +6,7 @@ MODELO_EMBEDDING  = "nomic-embed-text"
 
 
 def gerar_embedding(texto: str) -> np.ndarray:
-    """
-    Gera o embedding de um texto usando o nomic-embed-text via Ollama.
 
-    Args:
-        texto: texto a ser transformado em vetor
-
-    Returns:
-        vetor numpy float32
-    """
     response = requests.post(OLLAMA_URL, json={
         "model":  MODELO_EMBEDDING,
         "prompt": texto
@@ -41,31 +33,13 @@ def bytes_para_embedding(blob: bytes) -> np.ndarray:
     return np.frombuffer(blob, dtype=np.float32)
 
 def gerar_embedding_pergunta(pergunta: str) -> bytes:
-    """
-    Gera o embedding da pergunta do aluno.
-    Usado em responderPergunta() — salvo na tabela Mensagem.
 
-    Args:
-        pergunta: texto digitado pelo aluno
-
-    Returns:
-        embedding serializado como bytes para salvar no banco
-    """
     vetor = gerar_embedding(pergunta)
     return embedding_para_bytes(vetor)
 
 
 def gerar_embedding_conteudo(conteudo) -> bytes:
-    """
-    Gera o embedding de um conteúdo concatenando os campos relevantes.
-    Segue a função gerarEmbeddingConteudo() do pseudocódigo.
-
-    Args:
-        conteudo: objeto Conteudo do banco ou dicionário do JSON
-
-    Returns:
-        embedding serializado como bytes para salvar no banco
-    """
+    
     if isinstance(conteudo, dict):
         texto = " ".join([
             conteudo.get("titulo", ""),

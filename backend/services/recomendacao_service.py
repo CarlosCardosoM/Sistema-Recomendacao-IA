@@ -3,20 +3,18 @@ from sqlalchemy.orm import Session
 
 from database import Aluno, Conteudo, Interacao, Curtida
 
-# ── Pesos do scoreFinal ───────────────────────────────────────────────────────
-# Similaridade semântica domina — garante que o conteúdo seja relevante
-# para a pergunta antes de considerar preferências e histórico do aluno
-PESO_SIMILARIDADE = 0.60  # ← aumentado de 0.35 para 0.60
-PESO_PREFERENCIA  = 0.15  # tipo de conteúdo preferido pelo aluno
-PESO_CURTIDA      = 0.08  # já curtiu esse conteúdo
-PESO_HISTORICO    = 0.05  # já interagiu com esse conteúdo antes
-PESO_TEMPO        = 0.04  # tempo de visualização normalizado
-PESO_INTERACAO    = 0.03  # engajamento geral com o sistema
-PESO_DIFICULDADE  = 0.05  # nível compatível com a pergunta
 
-TEMPO_REFERENCIA = 300  # 5 minutos
+PESO_SIMILARIDADE = 0.60  
+PESO_PREFERENCIA  = 0.15  
+PESO_CURTIDA      = 0.08  
+PESO_HISTORICO    = 0.05  
+PESO_TEMPO        = 0.04  
+PESO_INTERACAO    = 0.03  
+PESO_DIFICULDADE  = 0.05  
+
+TEMPO_REFERENCIA = 300 
 SCORE_MINIMO_RECOMENDACAO = 0.30
-TOP_K_RECOMENDACOES = 3  # quantidade sempre buscada, desde a 1ª pergunta do aluno
+TOP_K_RECOMENDACOES = 3  
 
 
 def normalizar_texto(texto: str | None) -> str | None:
@@ -29,10 +27,6 @@ def normalizar_texto(texto: str | None) -> str | None:
     return texto_sem_acento.lower().strip()
 
 
-# O cadastro guarda a preferência com o rótulo do frontend ("Exercício"),
-# mas o catálogo de conteúdo usa "atividade" em Conteudo.tipo — sem esse
-# alias, a preferência por exercícios nunca batia com nada e o peso de
-# preferência ficava sempre zerado
 ALIAS_TIPO_PREFERENCIA = {
     "exercicio": "atividade",
 }
@@ -125,20 +119,7 @@ def _selecionar_com_preferencia_e_diversidade(
     elegiveis: list[tuple[Conteudo, float]],
     aluno: Aluno
 ) -> list[tuple[Conteudo, float]]:
-    """
-    Monta a lista final de recomendações a partir dos candidatos elegíveis
-    (já ordenados por score, do melhor pro pior).
-
-    O peso de preferência no score (PESO_PREFERENCIA) sozinho não garante
-    que o tipo preferido do aluno apareça: se a similaridade semântica de
-    outros tipos for maior, o vídeo preferido pode nunca entrar no top-3.
-    Por isso a seleção é feita em duas etapas:
-      1. Reserva a(s) primeira(s) vaga(s) pro melhor conteúdo elegível de
-         cada tipo que o aluno marcou como preferência no cadastro.
-      2. Preenche o restante priorizando tipos ainda não presentes na
-         lista (diversidade de mídia), e só repete tipo se não houver
-         mais opção elegível de um tipo novo.
-    """
+    
     tipos_preferidos = _tipos_preferidos_normalizados(aluno)
     selecionados: list[tuple[Conteudo, float]] = []
     ids_selecionados: set[int] = set()
@@ -189,25 +170,13 @@ def recomendar_conteudo(
     if not aluno:
         return []
 
-    # Personaliza apenas entre os conteúdos que o RAG já considerou
-    # semanticamente relevantes para a pergunta — nunca busca fora desse
-    # conjunto, para que preferência/curtida/histórico não puxem uma
-    # recomendação para um tópico diferente do que foi perguntado.
+
     lista_scores = []
     for conteudo, score_similaridade in conteudos_relevantes:
         score = calcular_score(db, aluno, conteudo, score_similaridade, nivel_pergunta)
         lista_scores.append((conteudo, score))
 
-    # Ordena por score: relevância pra pergunta primeiro (0.60, dominante),
-    # preferência de tipo em seguida (0.15) desempata entre conteúdos já
-    # comparáveis em relevância. Funciona de verdade porque
-    # conteudos_relevantes agora chega com um pool mais amplo de candidatos
-    # (ver rag_service.TOP_K_CANDIDATOS) — antes só os 3 melhores por
-    # similaridade bruta chegavam aqui, e se nenhum fosse do tipo preferido
-    # do aluno não havia o que escolher. A ordenação por score sozinha ainda
-    # não garante que o tipo preferido apareça (ver
-    # _selecionar_com_preferencia_e_diversidade), só define a prioridade
-    # dentro de cada etapa da seleção.
+
     lista_scores.sort(key=lambda x: x[1], reverse=True)
 
     # Só o que passou do score mínimo entra na disputa pelas vagas

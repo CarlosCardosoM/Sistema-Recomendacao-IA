@@ -1,10 +1,16 @@
+# Banco de dados
 backend/banco.db
 backend/banco.db-*
+
+# Variáveis de ambiente
 backend/.env
-backend/__pycache__/
-backend/*.pyc
+frontend/.env
+
+# Python
+**/__pycache__/
+*.py[cod]
 backend/venv/
 
+# Node
 frontend/node_modules/
 frontend/dist/
-frontend/.env

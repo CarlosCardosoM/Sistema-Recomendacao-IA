@@ -7,10 +7,6 @@ from controllers.aluno_controller import buscar_aluno_por_email
 
 
 def abrir_conteudo(db: Session, email: str, conteudo_id: int) -> Interacao:
-    """
-    Registra que o aluno abriu um conteúdo.
-    Segue a função abrirConteudo() do pseudocódigo.
-    """
     aluno = buscar_aluno_por_email(db, email)
 
     conteudo = db.query(Conteudo).filter(Conteudo.id == conteudo_id).first()
@@ -29,10 +25,7 @@ def abrir_conteudo(db: Session, email: str, conteudo_id: int) -> Interacao:
 
 
 def fechar_conteudo(db: Session, interacao_id: int) -> Interacao:
-    """
-    Registra o fechamento do conteúdo e calcula o tempo de visualização.
-    Segue a função fecharConteudo() do pseudocódigo.
-    """
+
     interacao = db.query(Interacao).filter(Interacao.id == interacao_id).first()
     if not interacao:
         raise HTTPException(status_code=404, detail="Interação não encontrada.")
@@ -51,10 +44,7 @@ def fechar_conteudo(db: Session, interacao_id: int) -> Interacao:
 
 
 def listar_interacoes_aluno(db: Session, email: str) -> list:
-    """
-    Retorna o histórico de interações de um aluno.
-    Equivalente ao historicoInteracoes do pseudocódigo.
-    """
+
     aluno = buscar_aluno_por_email(db, email)
 
     interacoes = db.query(Interacao).filter(
@@ -74,8 +64,6 @@ def listar_interacoes_aluno(db: Session, email: str) -> list:
 
 
 def contar_conteudos_abertos(db: Session, email: str) -> int:
-    """
-    Conta quantos conteúdos o aluno já abriu.
-    """
+
     aluno = buscar_aluno_por_email(db, email)
     return db.query(Interacao).filter(Interacao.aluno_id == aluno.id).count()

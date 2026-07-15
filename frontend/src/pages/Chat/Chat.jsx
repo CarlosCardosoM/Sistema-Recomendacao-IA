@@ -89,7 +89,7 @@ function Mensagem({ mensagem, nomeAluno, aluno }) {
       {eUsuario ? (
         <div className="avatar-iniciais">{iniciais(nomeAluno)}</div>
       ) : (
-        <img src={sabiaperfil} alt="SabiÁ" className="mensagem__avatar" />
+        <img src={sabiaperfil} alt="Sabiá" className="mensagem__avatar" />
       )}
       <div>
         <div className="mensagem__balao">
@@ -387,7 +387,7 @@ export default function Chat() {
           <div className="chat-header__info">
             <img src={sabiaperfil} alt="Sabiá" className="chat-header__avatar" />
             <div>
-              <p className="chat-header__nome">SabiÁ</p>
+              <p className="chat-header__nome">Sabiá</p>
               <p className="chat-header__subtitulo">Apoio ao aprendizado de algoritmos de busca</p>
             </div>
           </div>

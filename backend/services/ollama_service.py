@@ -93,7 +93,8 @@ def analisar_intencao(
     irrelevantes de perguntas de acompanhamento reais — concatenar texto
     cru (ex.: "Boa noite" + "Busca cega") dilui o sinal e piora a resposta.
 
-    Retorna {"tecnica": bool, "topico": str|None, "tipo": str|None}.
+    Retorna {"categoria": "tecnica"|"saudacao"|"fora_do_escopo",
+             "topico": str|None, "tipo": str|None}.
     """
     lista_topicos = "\n".join(f"- {t}" for t in topicos)
     lista_tipos    = "\n".join(f"- {t}" for t in tipos)
@@ -110,14 +111,27 @@ def analisar_intencao(
 JSON válido, sem nenhum texto antes ou depois, no formato exato:
 
 {{
-  "tecnica": true ou false,
+  "categoria": "tecnica" ou "saudacao" ou "fora_do_escopo",
   "topico": "nome exato de um tópico da lista, ou null",
   "tipo": "nome exato de um tipo da lista, ou null"
 }}
 
-"tecnica": true se a pergunta for sobre algoritmos de busca, inteligência
-artificial, grafos, código, programação ou conteúdo educacional de
-computação; false se for saudação ou assunto fora desse escopo.
+"categoria":
+- "tecnica": pergunta sobre algoritmos de busca, inteligência artificial,
+  grafos, código, programação ou conteúdo educacional de computação.
+- "saudacao": cumprimento ou conversa fiada, SEM pedir nenhum conteúdo,
+  explicação ou tarefa (ex.: "oi", "boa noite", "tudo bem?", "obrigado",
+  "valeu", "até mais"). Se a mensagem pede pra explicar, escrever, resolver,
+  traduzir ou ajudar com qualquer coisa, NÃO é saudação.
+- "fora_do_escopo": pede conteúdo, explicação, tarefa ou ajuda com qualquer
+  assunto que não seja algoritmos de busca em IA — mesmo que pareça inofensivo
+  (ex.: outra matéria escolar, escrever um texto/poema/redação, resolver
+  conta de matemática, receita, tradução, piada, código não relacionado ao
+  curso, qualquer outro tópico de conhecimento geral).
+
+Regra prática: se a mensagem pede pra você FAZER ou EXPLICAR alguma coisa
+que não é sobre algoritmos de busca em IA, é "fora_do_escopo", nunca
+"saudacao" — "saudacao" é só pra mensagens que não pedem nada.
 
 "topico": escolha dentre a lista abaixo qual é o tópico específico ao qual
 a pergunta se refere (use o histórico da conversa só para entender
@@ -145,7 +159,7 @@ Na dúvida, use null.
 
 Pergunta mais recente do aluno: {pergunta}"""
 
-    padrao = {"tecnica": True, "topico": None, "tipo": None}
+    padrao = {"categoria": "tecnica", "topico": None, "tipo": None}
 
     try:
         response = requests.post(OLLAMA_URL, json={
@@ -167,16 +181,20 @@ Pergunta mais recente do aluno: {pergunta}"""
         topico = _casar(resultado.get("topico"), topicos)
         tipo   = _casar(resultado.get("tipo"), tipos)
 
+        categoria = resultado.get("categoria")
+        if categoria not in ("tecnica", "saudacao", "fora_do_escopo"):
+            categoria = "tecnica"
         # Se um tópico específico do curso foi identificado, a pergunta já
-        # é técnica por definição — não depende só do campo solto "tecnica",
-        # que o modelo às vezes erra por ruído (modelo pequeno, roda na CPU)
-        # mesmo quando acerta o tópico na mesma resposta.
-        eh_tecnica = bool(resultado.get("tecnica", True)) or topico is not None
+        # é técnica por definição — não depende só do campo solto
+        # "categoria", que o modelo às vezes erra por ruído (modelo pequeno,
+        # roda na CPU) mesmo quando acerta o tópico na mesma resposta.
+        if topico is not None:
+            categoria = "tecnica"
 
         return {
-            "tecnica": eh_tecnica,
-            "topico":  topico,
-            "tipo":    tipo,
+            "categoria": categoria,
+            "topico":    topico,
+            "tipo":      tipo,
         }
     except Exception as e:
         print("ERRO AO ANALISAR INTENÇÃO DA PERGUNTA:", e)

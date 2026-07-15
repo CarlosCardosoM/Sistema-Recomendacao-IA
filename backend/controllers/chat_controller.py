@@ -10,6 +10,13 @@ from services.rag_service import processar_pergunta
 from services.ollama_service import gerar_resposta, analisar_pergunta
 from services.recomendacao_service import recomendar_conteudo
 
+MENSAGEM_FORA_DO_ESCOPO = (
+    "Desculpe, mas eu sou o SabiÁ e só posso ajudar com dúvidas sobre "
+    "algoritmos de busca em Inteligência Artificial (busca cega, informada, "
+    "A*, gulosa, custo uniforme, em largura, em profundidade e busca "
+    "competitiva). Poderia reformular sua pergunta dentro desse tema?"
+)
+
 
 def _buscar_sessao_do_aluno(db: Session, sessao_id: int, email: str) -> Sessao:
    
@@ -64,6 +71,40 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str, email: str) -
 
     resultado_rag = processar_pergunta(db, pergunta, historico_banco)
 
+    # Pergunta fora do escopo do curso — recusa direto, sem gastar as
+    # chamadas caras ao LLM (resposta + análise) nem gerar recomendações
+    if resultado_rag["categoria"] == "fora_do_escopo":
+        analise_vazia = {
+            "topico_principal": None, "subtopicos": None,
+            "assunto_geral": None, "nivel_dificuldade": None
+        }
+
+        mensagem_aluno = Mensagem(
+            sessao_id          = sessao_id,
+            papel              = "usuario",
+            conteudo           = pergunta,
+            analise_pergunta   = json.dumps(analise_vazia, ensure_ascii=False),
+            embedding_pergunta = resultado_rag["embedding_pergunta"]
+        )
+        db.add(mensagem_aluno)
+
+        mensagem_assistente = Mensagem(
+            sessao_id          = sessao_id,
+            papel              = "assistente",
+            conteudo           = MENSAGEM_FORA_DO_ESCOPO,
+            analise_pergunta   = json.dumps([], ensure_ascii=False),
+            embedding_pergunta = None
+        )
+        db.add(mensagem_assistente)
+        db.commit()
+
+        return {
+            "resposta":             MENSAGEM_FORA_DO_ESCOPO,
+            "analise_pergunta":     analise_vazia,
+            "conteudos_relevantes": [],
+            "recomendacoes":        [],
+        }
+
     with ThreadPoolExecutor(max_workers=2) as executor:
         futuro_resposta = executor.submit(
             gerar_resposta,
@@ -98,9 +139,6 @@ def responder_pergunta(db: Session, sessao_id: int, pergunta: str, email: str) -
         db.add(chunk)
     db.commit()
 
-    # Gera recomendações personalizadas — usa o pool amplo de candidatos
-    # (não só os 3 do contexto do LLM), pra preferência de tipo do aluno ter
-    # opções de sobra pra escolher dentro do que já é relevante pra pergunta
     candidatos_recomendacao = resultado_rag["candidatos_recomendacao"]
     if not candidatos_recomendacao:
         recomendacoes = []

@@ -59,24 +59,12 @@ def buscar_conteudos_relevantes(
     pergunta: str = "",
     mensagens: list | None = None,
     top_k: int = TOP_K_CANDIDATOS
-) -> list[tuple]:
+) -> tuple[list[tuple], str]:
     """
-    Busca os conteúdos mais similares à pergunta no banco.
-
-    Usa o LLM para classificar a pergunta antes de buscar:
-    - Técnica  → threshold 0.45 (encontra mais conteúdos)
-    - Genérica → threshold 0.70 (restritivo, evita ruído)
-
-    Vantagem: funciona com qualquer idioma e variação de texto,
-    sem depender de listas fixas de palavras.
+    Retorna (resultados, categoria) — categoria é "tecnica", "saudacao" ou
+    "fora_do_escopo", pra quem chama decidir se deve gerar uma resposta
+    normal ou recusar (ver chat_controller.responder_pergunta).
     """
-    # Uma única chamada ao LLM decide: é técnica (threshold baixo) ou
-    # genérica (threshold alto)? aponta pra um tópico específico? pede um
-    # tipo de conteúdo específico (ex.: atividade)? Sempre a pergunta crua,
-    # sem concatenar com o histórico: misturar texto (ex.: "Boa noite" +
-    # "Busca cega") dilui o sinal e derruba a classificação. O histórico
-    # recente entra como turnos separados só pra resolver referências
-    # ("esse algoritmo") sem se confundir com saudações irrelevantes.
     historico_recente = None
     if mensagens:
         historico_recente = [
@@ -85,10 +73,10 @@ def buscar_conteudos_relevantes(
 
     intencao = (
         analisar_intencao(pergunta, list(TOPICOS_ALIASES.keys()), TIPOS_DISPONIVEIS, historico_recente)
-        if pergunta else {"tecnica": False, "topico": None, "tipo": None}
+        if pergunta else {"categoria": "saudacao", "topico": None, "tipo": None}
     )
-    eh_tecnica = intencao["tecnica"]
-    threshold = THRESHOLD_TECNICO if eh_tecnica else THRESHOLD_GENERICO
+    categoria = intencao["categoria"]
+    threshold = THRESHOLD_TECNICO if categoria == "tecnica" else THRESHOLD_GENERICO
 
     conteudos = db.query(Conteudo).filter(Conteudo.embeddings != None).all()
 
@@ -118,7 +106,7 @@ def buscar_conteudos_relevantes(
 
     resultados.sort(key=lambda x: x[1], reverse=True)
     if not resultados:
-        return []
+        return [], categoria
 
     # Só mantém resultados próximos do melhor match — evita completar
     # o top_k com conteúdo de outro tópico só porque passou do threshold
@@ -128,7 +116,7 @@ def buscar_conteudos_relevantes(
         if s >= melhor_score - MARGEM_RELEVANCIA
     ]
 
-    return resultados[:top_k]
+    return resultados[:top_k], categoria
 
 
 def montar_contexto(conteudos_relevantes: list[tuple]) -> str:
@@ -182,7 +170,7 @@ def processar_pergunta(db: Session, pergunta: str, mensagens: list) -> dict:
 
     # 2. Busca o pool amplo de candidatos relevantes (mesma pergunta,
     #    mesmo tópico/tipo) com threshold dinâmico via LLM
-    candidatos_recomendacao = buscar_conteudos_relevantes(
+    candidatos_recomendacao, categoria = buscar_conteudos_relevantes(
         db, vetor_pergunta, pergunta, mensagens
     )
     conteudos_relevantes = candidatos_recomendacao[:TOP_K_CONTEXTO]
@@ -193,6 +181,7 @@ def processar_pergunta(db: Session, pergunta: str, mensagens: list) -> dict:
 
     return {
         "embedding_pergunta":      embedding_bytes,
+        "categoria":               categoria,
         "conteudos_relevantes":    conteudos_relevantes,
         "candidatos_recomendacao": candidatos_recomendacao,
         "contexto":                contexto,
