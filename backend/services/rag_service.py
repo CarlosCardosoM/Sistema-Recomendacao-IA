@@ -40,6 +40,23 @@ TOPICOS_ALIASES = {
 # Tipos de conteúdo cadastrados no banco (ver Conteudo.tipo)
 TIPOS_DISPONIVEIS = ["atividade", "video", "artigo", "livro", "codigo"]
 
+# Rede de segurança: se a pergunta contém um desses termos, ela é
+# claramente sobre algoritmos de busca — não deixamos o classificador do
+# LLM (modelo pequeno, sem persona, roda em CPU) rotular como
+# "fora_do_escopo" por ruído numa execução isolada. Não substitui o LLM
+# (que ainda identifica tópico/tipo), só evita a recusa indevida.
+PALAVRAS_CHAVE_TECNICO = [
+    "busca", "bfs", "dfs", "a*", "a-star", "minimax", "alfa-beta",
+    "alpha-beta", "poda", "heuristica", "heurística", "gulosa",
+    "custo uniforme", "largura", "profundidade", "grafo", "algoritmo",
+    "nó", "no ", "fronteira", "estado", "espaço de busca", "espaco de busca",
+]
+
+
+def _contem_palavra_chave_tecnica(pergunta: str) -> bool:
+    pergunta_norm = pergunta.lower()
+    return any(termo in pergunta_norm for termo in PALAVRAS_CHAVE_TECNICO)
+
 
 def calcular_similaridade(vetor1: np.ndarray, vetor2: np.ndarray) -> float:
     """
@@ -76,13 +93,14 @@ def buscar_conteudos_relevantes(
         if pergunta else {"categoria": "saudacao", "topico": None, "tipo": None}
     )
     categoria = intencao["categoria"]
+
+    if categoria == "fora_do_escopo" and pergunta and _contem_palavra_chave_tecnica(pergunta):
+        categoria = "tecnica"
+
     threshold = THRESHOLD_TECNICO if categoria == "tecnica" else THRESHOLD_GENERICO
 
     conteudos = db.query(Conteudo).filter(Conteudo.embeddings != None).all()
 
-    # Restringe ao tópico identificado, quando a pergunta apontar
-    # claramente para um — evita que o embedding "vaze" pra um subtópico
-    # vizinho só porque a similaridade textual é parecida.
     if intencao["topico"]:
         aliases = TOPICOS_ALIASES[intencao["topico"]]
         candidatos_topico = [c for c in conteudos if c.topico_principal in aliases]
@@ -149,20 +167,7 @@ def montar_historico(mensagens: list) -> list[dict]:
 
 
 def processar_pergunta(db: Session, pergunta: str, mensagens: list) -> dict:
-    """
-    Pipeline completo do RAG.
 
-    Retorna dois conjuntos de conteúdos relevantes com propósitos diferentes:
-    - "conteudos_relevantes": só os TOP_K_CONTEXTO melhores por similaridade —
-      vai no prompt do LLM e na auditoria (ChunkUsage). Mantido pequeno pra
-      não inflar o contexto nem o tempo de geração.
-    - "candidatos_recomendacao": um pool mais amplo (TOP_K_CANDIDATOS), ainda
-      dentro do mesmo tópico/tipo validados pela intenção da pergunta, pra
-      recomendacao_service ter opções reais de sobra ao aplicar a preferência
-      do aluno — sem isso, se o tipo preferido do aluno não estivesse entre
-      os 3 melhores por similaridade bruta, a preferência nunca tinha o que
-      escolher.
-    """
     # 1. Gera o embedding da pergunta (sempre o texto original — ver
     #    buscar_conteudos_relevantes para como o histórico é usado)
     vetor_pergunta = gerar_embedding(pergunta)

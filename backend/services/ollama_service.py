@@ -54,7 +54,11 @@ Pergunta: {pergunta}"""
             "messages": [{"role": "user", "content": prompt}],
             "format":   "json",
             "stream":   False,
-            "options":  {"num_predict": 150}
+            # temperature baixa: essa chamada é uma classificação/extração
+            # estruturada, não geração de texto livre — sem isso o Ollama
+            # usa o default (~0.8) e a mesma pergunta pode sair classificada
+            # de formas diferentes em execuções distintas.
+            "options":  {"num_predict": 150, "temperature": 0.1}
         })
         response.raise_for_status()
         conteudo = response.json()["message"]["content"]
@@ -167,7 +171,8 @@ Pergunta mais recente do aluno: {pergunta}"""
             "messages": [{"role": "user", "content": prompt}],
             "format":   "json",
             "stream":   False,
-            "options":  {"num_predict": 100}
+
+            "options":  {"num_predict": 100, "temperature": 0.1}
         })
         response.raise_for_status()
         resultado = json.loads(response.json()["message"]["content"])
@@ -184,10 +189,7 @@ Pergunta mais recente do aluno: {pergunta}"""
         categoria = resultado.get("categoria")
         if categoria not in ("tecnica", "saudacao", "fora_do_escopo"):
             categoria = "tecnica"
-        # Se um tópico específico do curso foi identificado, a pergunta já
-        # é técnica por definição — não depende só do campo solto
-        # "categoria", que o modelo às vezes erra por ruído (modelo pequeno,
-        # roda na CPU) mesmo quando acerta o tópico na mesma resposta.
+
         if topico is not None:
             categoria = "tecnica"
 
