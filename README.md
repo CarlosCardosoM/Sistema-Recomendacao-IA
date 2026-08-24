@@ -1,4 +1,4 @@
-# Sabiá — Sistema de Recomendação de Conteúdo com IA
+# Sabiá  Sistema de Recomendação de Conteúdo com IA
 
 Chatbot educacional com RAG (Retrieval-Augmented Generation) para alunos de Sistemas de Informação, com foco em Algoritmos de Busca.
 ## Sumário
