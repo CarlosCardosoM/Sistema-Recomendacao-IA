@@ -10,29 +10,25 @@ import {
   abrirConteudo,
   fecharConteudo,
 } from "../../services/chatService";
-import sabiaperfil from "../../assets/sabiaperfil.png";
+import vetriaperfil from "../../assets/vetriaperfil.png";
 import "./Chat.css";
 import ReactMarkdown from "react-markdown";
 import { Plus, Trash2, User, LogOut, Send, Pencil, Check } from "lucide-react";
 
-// Chaves isoladas por e-mail — cada conta tem sua própria lista de sessões
-// no localStorage, para trocar de conta no mesmo navegador não misturar
-// o histórico de uma pessoa com o de outra
+
 function chaveSessoes(email) {
-  return `sabia_sessoes_${email}`;
+  return `vetria_sessoes_${email}`;
 }
 
 function chaveContador(email) {
-  return `sabia_contador_sessoes_${email}`;
+  return `vetria_contador_sessoes_${email}`;
 }
 
 function iniciais(nome = "") {
   return nome.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join("");
 }
 
-// ── Contador de sessões criadas por conta ──
-// Persiste no localStorage para nunca repetir o número
-// mesmo após limpar a lista de sessões
+
 function proximoNumeroSessao(chave) {
   const atual = parseInt(localStorage.getItem(chave) || "0", 10);
   const proximo = atual + 1;
@@ -89,7 +85,7 @@ function Mensagem({ mensagem, nomeAluno, aluno }) {
       {eUsuario ? (
         <div className="avatar-iniciais">{iniciais(nomeAluno)}</div>
       ) : (
-        <img src={sabiaperfil} alt="Sabiá" className="mensagem__avatar" />
+        <img src={vetriaperfil} alt="Vetria" className="mensagem__avatar" />
       )}
       <div>
         <div className="mensagem__balao">
@@ -106,7 +102,7 @@ function Mensagem({ mensagem, nomeAluno, aluno }) {
 function MensagemCarregando() {
   return (
     <div className="mensagem assistente">
-      <img src={sabiaperfil} alt="Sabiá" className="mensagem__avatar" />
+      <img src={vetriaperfil} alt="Vetria" className="mensagem__avatar" />
       <div className="mensagem__balao">
         <div className="mensagem__loading"><span /><span /><span /></div>
       </div>
@@ -229,7 +225,7 @@ export default function Chat() {
       if (historico.length === 0) {
         setMensagens([{
           papel: "assistente",
-          conteudo: `Olá, ${aluno.nome}! Sou o Sabiá, seu assistente de aprendizado. Como posso te ajudar hoje?`,
+          conteudo: `Olá, ${aluno.nome}! Sou o Vetria, seu assistente de aprendizado. Como posso te ajudar hoje?`,
         }]);
       } else {
         setMensagens(historico.map((m) => ({
@@ -271,7 +267,7 @@ export default function Chat() {
       setSessaoId(dados.sessao_id);
       setMensagens([{
         papel: "assistente",
-        conteudo: `Olá, ${aluno.nome}! Sou o Sabiá, seu assistente de aprendizado. Como posso te ajudar hoje?`,
+        conteudo: `Olá, ${aluno.nome}! Sou o Vetria, seu assistente de aprendizado. Como posso te ajudar hoje?`,
       }]);
       setSessoes((ant) => [novaSessao, ...ant]);
     } catch (erro) {
@@ -385,9 +381,9 @@ export default function Chat() {
       <main className="chat-principal">
         <header className="chat-header">
           <div className="chat-header__info">
-            <img src={sabiaperfil} alt="Sabiá" className="chat-header__avatar" />
+            <img src={vetriaperfil} alt="Vetria" className="chat-header__avatar" />
             <div>
-              <p className="chat-header__nome">Sabiá</p>
+              <p className="chat-header__nome">Vetria</p>
               <p className="chat-header__subtitulo">Apoio ao aprendizado de algoritmos de busca</p>
             </div>
           </div>

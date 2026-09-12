@@ -1,4 +1,4 @@
-import imagemLateral from "../assets/sabialateral.png";
+import imagemLateral from "../assets/vetrialateral.png";
 import "./PainelLateral.css";
 
 export default function PainelLateral({ titulo, texto }) {
@@ -22,7 +22,7 @@ export default function PainelLateral({ titulo, texto }) {
         </div>
 
         <p className="painel-lateral__rodape">
-          © 2026 Sabiá.
+          © 2026 Vetria.
         </p>
 
       </div>
