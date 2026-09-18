@@ -405,6 +405,7 @@ export default function Chat() {
           <div ref={fimMensagensRef} />
         </div>
 
+
         <div className="chat-input-area">
           <form className="chat-input-form" onSubmit={aoEnviar}>
             <textarea
