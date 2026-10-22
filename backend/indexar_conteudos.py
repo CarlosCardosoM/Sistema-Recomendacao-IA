@@ -30,13 +30,10 @@ def indexar_conteudos():
     print(f" {len(conteudos)} conteúdos encontrados\n")
 
     for i, item in enumerate(conteudos, start=1):
-        # Verifica se já existe pelo par (titulo, topico_principal) — não pelo
-        # link sozinho, porque o catálogo reaproveita o mesmo link de propósito
-        # para o mesmo material coberto em vários tópicos (ex.: o livro do
-        # Norvig & Russell tem uma entrada por tópico, todas com o mesmo PDF)
         existente = sessao.query(Conteudo).filter(
             Conteudo.titulo == item["titulo"],
-            Conteudo.topico_principal == item["topico_principal"]
+            Conteudo.topico_principal == item["topico_principal"],
+            Conteudo.link == item["link"]
         ).first()
         if existente:
             print(f"[{i}]  Já existe: {item['titulo']}")

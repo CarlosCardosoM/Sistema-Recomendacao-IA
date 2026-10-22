@@ -55,14 +55,113 @@
     "nivel_dificuldade": "básico"
   },
   {
-    "titulo": "Atividades Práticas: Busca Cega",
+    "titulo": "Exercício: Busca cega",
     "tipo": "atividade",
-    "descricao": "Exercícios e problemas para aplicação dos algoritmos de busca.",
-    "link": "https://drive.google.com/file/d/1UQZPx50Fc2l_0x3yi3hQtD8u0lK7_0Bt/view",
+    "descricao": "Atividade individual em PDF sobre busca cega. Arquivo de origem: Atividade_01_Busca_Cega.pdf.",
+    "link": "https://drive.google.com/file/d/1_2zWEMAUyyG5NbuYJ4vP8dvDBlOMqUyN/view",
     "idioma": "pt-br",
-    "topico_principal": "Busca Cega",
+    "topico_principal": "Busca cega",
     "subtopicos": "Prática, Exercícios",
-    "palavras_chave": "atividade, exercicio",
+    "palavras_chave": "atividade, exercício, busca cega, não especificado",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca cega",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca cega. Arquivo de origem: Atividade_02_Busca_Cega.pdf.",
+    "link": "https://drive.google.com/file/d/1j8BD60MxG5LVDmSOXfON1qPdO-8Nx5lg/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca cega",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca cega, não especificado",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca cega",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca cega. Arquivo de origem: Atividade_03_Busca_Cega.pdf.",
+    "link": "https://drive.google.com/file/d/1_Yp2xR29g3lua_cwsLzjTajElFJnzvJg/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca cega",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca cega, não especificado",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca cega",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca cega. Arquivo de origem: Atividade_04_Busca_Cega.pdf.",
+    "link": "https://drive.google.com/file/d/1a9fRVNaVWiA4cCKHBo94_DCf2Txbxubu/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca cega",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca cega, não especificado",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca cega",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca cega. Arquivo de origem: Atividade_05_Busca_Cega.pdf.",
+    "link": "https://drive.google.com/file/d/1boYnZ7QwCGO_18RfwHj56ULKn3s_Vbv3/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca cega",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca cega, não especificado",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca cega",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca cega. Arquivo de origem: Atividade_06_Busca_Cega.pdf.",
+    "link": "https://drive.google.com/file/d/1guqfGgWiKNjhClokofY_l_dDyEwOwr84/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca cega",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca cega, não especificado",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca cega",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca cega. Arquivo de origem: Atividade_07_Busca_Cega.pdf.",
+    "link": "https://drive.google.com/file/d/1xFSKVql2D7gPc6NOWXQfU1eER6hNakEZ/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca cega",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca cega, não especificado",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca cega",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca cega. Arquivo de origem: Atividade_08_Busca_Cega.pdf.",
+    "link": "https://drive.google.com/file/d/102UM9KofgzdzauGAQJELJCQ2U96uKHCJ/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca cega",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca cega, não especificado",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca cega",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca cega. Arquivo de origem: Atividade_09_Busca_Cega.pdf.",
+    "link": "https://drive.google.com/file/d/1dJy8qnKkjuBWVG9KofG0cVULVeQZGZRk/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca cega",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca cega, não especificado",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca cega",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca cega. Arquivo de origem: Atividade_10_Busca_Cega.pdf.",
+    "link": "https://drive.google.com/file/d/1lj6r8Suty26cGBGSDR6zvOgnRiGXSAQO/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca cega",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca cega, não especificado",
     "nivel_dificuldade": "básico"
   },
  {
@@ -143,17 +242,148 @@
     "nivel_dificuldade": "básico"
   },
   {
-    "titulo": "Atividade Prática: Exercícios de Busca Informada",
+    "titulo": "Exercício: Busca informada — busca informada atividade",
     "tipo": "atividade",
-    "descricao": "Lista de exercícios para aplicar algoritmos como Busca Gulosa e A* em cenários práticos.",
-    "link": "https://drive.google.com/file/d/1n09mro4NigpiOk3huoNkSmxlBnuX3zQu/view",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_01.pdf.",
+    "link": "https://drive.google.com/file/d/1sEWoRsdVIUKTx-6W6wo_I1mTOGb3H2OP/view",
     "idioma": "pt-br",
-    "topico_principal": "Busca Informada",
-    "subtopicos": "Prática, Resolução de problemas",
-    "palavras_chave": "exercícios, atividade, prática",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
     "nivel_dificuldade": "básico"
   },
-
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_02.pdf.",
+    "link": "https://drive.google.com/file/d/1Xu6lXsQcPHm2tSKVY3V22ccD3FiyMlmH/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_03.pdf.",
+    "link": "https://drive.google.com/file/d/1Uj8arqTTglppoBffO4lAC7_TvWKZr-aM/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_04.pdf.",
+    "link": "https://drive.google.com/file/d/1kQy63l26uHIokQXknEcW_7JvktEgYzet/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_05.pdf.",
+    "link": "https://drive.google.com/file/d/1tkGG2nG9AbuhxhwGwFNgESOYX19HLPAV/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_06.pdf.",
+    "link": "https://drive.google.com/file/d/1YWT0p1OS7eagmxLRmQKDXogqK1XjF2C0/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_07.pdf.",
+    "link": "https://drive.google.com/file/d/1PUe2CvPb34CVERWkjRnMRvHirKL-apSY/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_08.pdf.",
+    "link": "https://drive.google.com/file/d/1_dYLRy9e74vzEJBktglIDhAaVJndMI-1/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_09.pdf.",
+    "link": "https://drive.google.com/file/d/1ktbOHaOYRsDlNKQoTEnmHx5fJS7ypw1t/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_10.pdf.",
+    "link": "https://drive.google.com/file/d/10Tl81UOspi-lHMpDbWUV2vUOvkmc403B/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_11.pdf.",
+    "link": "https://drive.google.com/file/d/1xqtDJph15-EEh6PFaJvpwU35xxAtiwG4/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_12.pdf.",
+    "link": "https://drive.google.com/file/d/1cqQzvPMk6bPEgfoKsQ41S3_J_rDN112c/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca informada — busca informada atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca informada. Arquivo de origem: busca_informada_atividade_13.pdf.",
+    "link": "https://drive.google.com/file/d/1sqGrrGhJ_tqni1UOgGKK4ksBdU3i0Dvk/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca informada",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca informada, básico",
+    "nivel_dificuldade": "básico"
+  },
   {
     "titulo": "Explicação do Algoritmo A* (Drive)",
     "tipo": "artigo",
@@ -309,28 +539,6 @@
     "nivel_dificuldade": "intermediário"
   },
   {
-    "titulo": "Exercícios de Fixação A* - Parte 1",
-    "tipo": "atividade",
-    "descricao": "Lista de exercícios práticos para cálculo de g(n) e h(n) em grafos.",
-    "link": "https://drive.google.com/file/d/1wCieIk-3TadbrmhQDKy425ED7MUzjw30/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca A*",
-    "subtopicos": "Prática, Exercícios",
-    "palavras_chave": "drive, atividade",
-    "nivel_dificuldade": "básico"
-  },
-  {
-    "titulo": "Exercícios de Fixação A* - Parte 2",
-    "tipo": "atividade",
-    "descricao": "Problemas avançados de aplicação do algoritmo A* em mapas e labirintos.",
-    "link": "https://drive.google.com/file/d/1o6zZpjc-4f9HLLd4RgFTqxkqvaroOB0m/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca A*",
-    "subtopicos": "Prática, Grafos",
-    "palavras_chave": "drive, atividade, avançado",
-    "nivel_dificuldade": "intermediário"
-  },
-  {
     "titulo": "Implementação Algoritmo A* (Repositório)",
     "tipo": "codigo",
     "descricao": "Exemplo de implementação do algoritmo A* com documentação no Readme sobre o funcionamento.",
@@ -339,7 +547,7 @@
     "topico_principal": "Busca A*",
     "subtopicos": "Python, Implementação, Estrutura de dados",
     "palavras_chave": "github, opensource, a-estrela",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Gist: A-Star Search em Python",
@@ -350,7 +558,7 @@
     "topico_principal": "Busca A*",
     "subtopicos": "Python, Gist, Código fonte",
     "palavras_chave": "python, snippet, algoritmo",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Repositório: Busca A-estrela",
@@ -361,7 +569,140 @@
     "topico_principal": "Busca A*",
     "subtopicos": "Algoritmos, Programação, IA",
     "palavras_chave": "github, projeto, busca informada",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
+  },
+  
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela basico",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_basico_q01 1.pdf.",
+    "link": "https://drive.google.com/file/d/1eyZXbx57QdR69Ht1klGVHDf50DnroZnO/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela basico",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_basico_q02 1.pdf.",
+    "link": "https://drive.google.com/file/d/1J59KIMxE9IwBfHJ1irDn6Rs5W-SQGVej/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela basico",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_basico_q03.pdf.",
+    "link": "https://drive.google.com/file/d/1tUEk2ABgO70R0rwZFdwdyF39uVzJY6Np/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela basico",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_basico_q04.pdf.",
+    "link": "https://drive.google.com/file/d/1LLn8Ob6BqTVdaRcv5ggDQ_mat6gqw7OU/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela basico",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_basico_q05.pdf.",
+    "link": "https://drive.google.com/file/d/1swY2qHOSMO9oUUXIGPf3_F-3odPbt10H/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela basico",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_basico_q06.pdf.",
+    "link": "https://drive.google.com/file/d/1ISzxPePNpsEV9kxqq6lCmgBFE5pTqYlB/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela basico",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_basico_q07.pdf.",
+    "link": "https://drive.google.com/file/d/1_-9WBnPjF0z6vlWKd1VXCwh2Q9KlHxDX/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela basico",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_basico_q08.pdf.",
+    "link": "https://drive.google.com/file/d/10-CTra3gtYiATZHoimVhyl2JLfBOWE2x/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela basico ",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_basico_q09.pdf.",
+    "link": "https://drive.google.com/file/d/1ZdMzN6I7HGNNTbu0hcC1wzwZeGdEID-n/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela intermedario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_intermedario_q02.pdf.",
+    "link": "https://drive.google.com/file/d/1Hqf4tli4e-4BIaAgZ4FdqduHh93fafpm/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela intermedario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_intermedario_q03.pdf.",
+    "link": "https://drive.google.com/file/d/1xsYILfFNB1aFNhGtr2UaGuwkwJJiloqO/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca A estrela — lista de exercicios busca a estrela intermedario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca a estrela. Arquivo de origem: lista_de_exercicios_busca_a_estrela_intermedario_q04.pdf.",
+    "link": "https://drive.google.com/file/d/1Goi1ia_RYDpZIB3og0f7fz2jFLiYIQC9/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca A estrela",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca a estrela, intermediário",
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Explorando a Busca Gulosa",
@@ -449,7 +790,7 @@
     "topico_principal": "Greedy Search",
     "subtopicos": "Python, Implementation",
     "palavras_chave": "analytics vidhya, code, tutorial",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Aula: Fundamentos da Busca Gulosa (Drive)",
@@ -507,28 +848,6 @@
     "nivel_dificuldade": "intermediário"
   },
   {
-    "titulo": "Exercícios de Fixação: Busca Gulosa - Parte 1",
-    "tipo": "atividade",
-    "descricao": "Lista de exercícios práticos para treinar a aplicação da busca gulosa.",
-    "link": "https://drive.google.com/file/d/1plhYpSa7S2AB8Ru090RWtnSnJ_YXUAyV/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca Gulosa",
-    "subtopicos": "Fixação, Prática",
-    "palavras_chave": "drive, atividade",
-    "nivel_dificuldade": "básico"
-  },
-  {
-    "titulo": "Exercícios de Fixação: Busca Gulosa - Parte 2",
-    "tipo": "atividade",
-    "descricao": "Problemas complementares sobre o uso de heurísticas em algoritmos gulosos.",
-    "link": "https://drive.google.com/file/d/1z7tB8hEEoGymONB4hYelPlFNxQJJT-w8/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca Gulosa",
-    "subtopicos": "Problemas de IA, Grafos",
-    "palavras_chave": "drive, atividade",
-    "nivel_dificuldade": "intermediário"
-  },
-  {
     "titulo": "Código: Implementação Busca Gulosa Python",
     "tipo": "codigo",
     "descricao": "Script completo com a implementação do algoritmo de busca gulosa.",
@@ -537,7 +856,7 @@
     "topico_principal": "Busca Gulosa",
     "subtopicos": "Python, Algoritmos IA",
     "palavras_chave": "github, programação, código",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Exemplo de Código: Busca Gulosa",
@@ -548,7 +867,172 @@
     "topico_principal": "Busca Gulosa",
     "subtopicos": "Python, Lógica de programação",
     "palavras_chave": "github, didática, script",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — busca gulosa atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: busca_gulosa_atividade_01.pdf.",
+    "link": "https://drive.google.com/file/d/10XqDTP7imCovuK7EGxyAHI4um_7-tOYO/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — busca gulosa atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: busca_gulosa_atividade_02.pdf.",
+    "link": "https://drive.google.com/file/d/1GQo0dlldJh8ojIw3LbkK2gGLpFF-Dnh6/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — busca gulosa atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: busca_gulosa_atividade_03.pdf.",
+    "link": "https://drive.google.com/file/d/1yMnPkPMZhheKvZ1PsgdvjB_hje2yY1NI/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — busca gulosa atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: busca_gulosa_atividade_04.pdf.",
+    "link": "https://drive.google.com/file/d/1aqDARAXnNRMvGtY2ieRu3jX9wWL61My5/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — busca gulosa atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: busca_gulosa_atividade_05.pdf.",
+    "link": "https://drive.google.com/file/d/1jLzWx-9yOTw4uH_EHY2JJR4J4rhhKFmy/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — busca gulosa atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: busca_gulosa_atividade_06.pdf.",
+    "link": "https://drive.google.com/file/d/1pGmTB92cjWdvLo5aFFhEgQZJu15bvr5e/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — busca gulosa atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: busca_gulosa_atividade_07.pdf.",
+    "link": "https://drive.google.com/file/d/1crk0nSraJwGiQDA-fQMNrQgIlkYmz4Tr/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — busca gulosa atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: busca_gulosa_atividade_08.pdf.",
+    "link": "https://drive.google.com/file/d/1Q1gsQG6NyGSoDiD0wIsf6IpAxZ6aZPhT/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — lista de exercicios busca gulosa intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: lista_de_exercicios_busca_gulosa_intermediario_q01.pdf.",
+    "link": "https://drive.google.com/file/d/1BHlO-Qq86agOgs3ZTJfWKeFAmxjwJX2F/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — lista de exercicios busca gulosa intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: lista_de_exercicios_busca_gulosa_intermediario_q02.pdf.",
+    "link": "https://drive.google.com/file/d/1C0d4C3JzajBoFujlbaGdBO1Hw7hZlUqN/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — lista de exercicios busca gulosa intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: lista_de_exercicios_busca_gulosa_intermediario_q03.pdf.",
+    "link": "https://drive.google.com/file/d/1sXDQqXpEfDo06AQrWCcU_2FOthB2bIyk/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — lista de exercicios busca gulosa intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: lista_de_exercicios_busca_gulosa_intermediario_q04.pdf.",
+    "link": "https://drive.google.com/file/d/17xo_AknUM_1D8_vIz8lWiozW99HufR8B/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — lista de exercicios busca gulosa intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: lista_de_exercicios_busca_gulosa_intermediario_q05.pdf.",
+    "link": "https://drive.google.com/file/d/1LU4-Np6bb03cuQE68Zh9E7CBm8WyDtsU/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — lista de exercicios busca gulosa intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: lista_de_exercicios_busca_gulosa_intermediario_q06.pdf.",
+    "link": "https://drive.google.com/file/d/1DXD_nkzkGzhDoIFx3Av_cY8peHPxftTd/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca gulosa — lista de exercicios busca gulosa intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca gulosa. Arquivo de origem: lista_de_exercicios_busca_gulosa_intermediario_q07.pdf.",
+    "link": "https://drive.google.com/file/d/1dFEe8r2bnr4iRzhixwey_9ITqL91KOrl/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca gulosa",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca gulosa, intermediário",
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Algoritmos de Busca: Custo Uniforme (USP)",
@@ -614,7 +1098,7 @@
     "topico_principal": "Uniform Cost Search",
     "subtopicos": "Priority Queue, Graph Traversal",
     "palavras_chave": "geeksforgeeks, technical, computer science",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Vídeo Aula: Busca de Custo Uniforme (Drive)",
@@ -661,28 +1145,6 @@
     "nivel_dificuldade": "básico"
   },
   {
-    "titulo": "Atividade Nível Básico: Busca Custo Uniforme",
-    "tipo": "atividade",
-    "descricao": "Exercícios introdutórios para fixação dos conceitos de custo acumulado e expansão.",
-    "link": "https://drive.google.com/file/d/1C2VF-yvw3bpUe5HJ7aHCi4B0aEAmwspv/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca Custo Uniforme",
-    "subtopicos": "Fixação, Exercícios",
-    "palavras_chave": "atividade, drive, básico",
-    "nivel_dificuldade": "básico"
-  },
-  {
-    "titulo": "Atividade Nível Intermediário: Desafios UCS",
-    "tipo": "atividade",
-    "descricao": "Problemas práticos e cenários complexos para aplicação da busca de custo uniforme.",
-    "link": "https://drive.google.com/file/d/1W8VcWv9W5ryiGl-8GSxWQKEXYyt9Wrmm/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca Custo Uniforme",
-    "subtopicos": "Problemas de IA, Grafos Pesados",
-    "palavras_chave": "atividade, drive, intermediário",
-    "nivel_dificuldade": "intermediário"
-  },
-  {
     "titulo": "Código: Uniform Cost Search em Python",
     "tipo": "codigo",
     "descricao": "Gist com implementação limpa do algoritmo UCS utilizando heapq (fila de prioridade).",
@@ -691,7 +1153,161 @@
     "topico_principal": "Busca Custo Uniforme",
     "subtopicos": "Python, Fila de Prioridade, Snippet",
     "palavras_chave": "gist, código, python",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
+  },
+    {
+    "titulo": "Exercício: Busca custo uniforme — busca de custo uniforme atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: busca_de_custo_uniforme_atividade_01.pdf.",
+    "link": "https://drive.google.com/file/d/16Nklgdu7xgPyBi1EJwuS9eJxkLA3lx7z/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — busca de custo uniforme atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: busca_de_custo_uniforme_atividade_02.pdf.",
+    "link": "https://drive.google.com/file/d/1Z-QMamD7YulErLA8fR2JLL6cSE-eT-LR/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — busca de custo uniforme atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: busca_de_custo_uniforme_atividade_03.pdf.",
+    "link": "https://drive.google.com/file/d/1xnxw2z42vfjjup8p4nO3ZmD_Dc-7Di3v/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — busca de custo uniforme atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: busca_de_custo_uniforme_atividade_04.pdf.",
+    "link": "https://drive.google.com/file/d/1WaVr3cxIbIc5wrYRE0VuQHaR6KvFsfcg/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — busca de custo uniforme atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: busca_de_custo_uniforme_atividade_05.pdf.",
+    "link": "https://drive.google.com/file/d/1fU7jdNiktCA06oHQZPMV26zjuzmUBmV6/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — busca de custo uniforme atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: busca_de_custo_uniforme_atividade_06.pdf.",
+    "link": "https://drive.google.com/file/d/1Wx39yHfsB9VZKYm-yET770juL1e0C8bX/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — lista de exercicios busca custo uniforme intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: lista_de_exercicios_busca_custo_uniforme_intermediario_q01.pdf.",
+    "link": "https://drive.google.com/file/d/1QpMM0gcVqY-WwN7VbPha50W58UzjsiPP/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — lista de exercicios busca custo uniforme intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: lista_de_exercicios_busca_custo_uniforme_intermediario_q02.pdf.",
+    "link": "https://drive.google.com/file/d/1Baim8kc0jDB5SocghDcCxpwToGsmzXMa/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — lista de exercicios busca custo uniforme intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: lista_de_exercicios_busca_custo_uniforme_intermediario_q03.pdf.",
+    "link": "https://drive.google.com/file/d/1VNW753JiqmPSwxZAheH7I6BG4aLVEmbu/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — lista de exercicios busca custo uniforme intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: lista_de_exercicios_busca_custo_uniforme_intermediario_q04.pdf.",
+    "link": "https://drive.google.com/file/d/1QSO3xATsXARWGrgSA9qullV4kVr2Ov81/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — lista de exercicios busca custo uniforme intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: lista_de_exercicios_busca_custo_uniforme_intermediario_q05.pdf.",
+    "link": "https://drive.google.com/file/d/1ooW__cbmF0oYQcEtrg5idtgiWZnT6v52/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — lista de exercicios busca custo uniforme intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: lista_de_exercicios_busca_custo_uniforme_intermediario_q06.pdf.",
+    "link": "https://drive.google.com/file/d/1-evMD0TnCuFG64diXsUrWaaPolIoQZJp/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — lista de exercicios busca custo uniforme intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: lista_de_exercicios_busca_custo_uniforme_intermediario_q07.pdf.",
+    "link": "https://drive.google.com/file/d/1balpHNYli96Z0QwHViYuwUmQEk40lkLU/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca custo uniforme — lista de exercicios busca custo uniforme intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca custo uniforme. Arquivo de origem: lista_de_exercicios_busca_custo_uniforme_intermediario_q08.pdf.",
+    "link": "https://drive.google.com/file/d/1UhWOlYh_FJjtD0g3WZ3pcsz8k4XOHiDq/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca custo uniforme",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca custo uniforme, intermediário",
+    "nivel_dificuldade": "intermediário"
   },
  {
     "titulo": "Busca em Largura (Breadth-First Search - USP)",
@@ -702,7 +1318,7 @@
     "topico_principal": "Busca em Largura",
     "subtopicos": "Grafos, BFS, Algoritmos",
     "palavras_chave": "usp, teoria, grafos",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Algoritmos de Busca para Resolução de Problemas (SBC)",
@@ -768,7 +1384,7 @@
     "topico_principal": "Breadth-First Search",
     "subtopicos": "Queue, Graph Traversal",
     "palavras_chave": "interview prep, technical",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Breadth-first search (CP Algorithms)",
@@ -859,28 +1475,6 @@
     "nivel_dificuldade": "intermediário"
   },
   {
-    "titulo": "Atividade Fixação: BFS Teórico",
-    "tipo": "atividade",
-    "descricao": "Exercícios para fixação de conceitos básicos de BFS.",
-    "link": "https://drive.google.com/file/d/1KHtSUoO_8arpebs154f37sNCI7NTbR59/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca em Largura",
-    "subtopicos": "Fixação, Teoria",
-    "palavras_chave": "drive, básico",
-    "nivel_dificuldade": "básico"
-  },
-  {
-    "titulo": "Atividade Prática: BFS em Mapas",
-    "tipo": "atividade",
-    "descricao": "Problemas práticos de aplicação de BFS.",
-    "link": "https://drive.google.com/file/d/16bi-RoetmtNtSt4-_z2RSLdcbkdEvWj4/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca em Largura",
-    "subtopicos": "Resolução, Grafos",
-    "palavras_chave": "drive, intermediário",
-    "nivel_dificuldade": "intermediário"
-  },
-  {
     "titulo": "Código: Árvore de Busca em Largura (Python)",
     "tipo": "codigo",
     "descricao": "Implementação de BFS em estruturas de árvore.",
@@ -889,7 +1483,7 @@
     "topico_principal": "Busca em Largura",
     "subtopicos": "Python, Árvores",
     "palavras_chave": "github, python",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Código: Manipulação de Grafos BFS",
@@ -900,7 +1494,7 @@
     "topico_principal": "Busca em Largura",
     "subtopicos": "C++, Grafos",
     "palavras_chave": "github, c++",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Código: BFS vs DFS Implementation",
@@ -911,7 +1505,7 @@
     "topico_principal": "Algoritmos de Busca",
     "subtopicos": "Queue, Stack, BFS, DFS",
     "palavras_chave": "github, comparação",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
  {
     "titulo": "Algoritmos de Busca para Resolução de Problemas (SBC)",
@@ -955,7 +1549,7 @@
     "topico_principal": "Busca em Profundidade",
     "subtopicos": "Algoritmos, Teoria de Grafos",
     "palavras_chave": "pdf, acadêmico, dfs",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Livro: IA (Norvig & Russell) - Seção DFS",
@@ -999,7 +1593,7 @@
     "topico_principal": "Busca em Profundidade",
     "subtopicos": "Python, Implementação, Código",
     "palavras_chave": "datacamp, tutorial, python",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Depth First Search (CP Algorithms)",
@@ -1079,28 +1673,6 @@
     "nivel_dificuldade": "intermediário"
   },
   {
-    "titulo": "Atividade Nível Básico: Fixação DFS",
-    "tipo": "atividade",
-    "descricao": "Lista de exercícios conceituais sobre busca em profundidade.",
-    "link": "https://drive.google.com/file/d/11dXxjOWQMYWRt0VIHmLtEPjclgyz_6V0/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca em Profundidade",
-    "subtopicos": "Teoria, Fixação",
-    "palavras_chave": "drive, básico",
-    "nivel_dificuldade": "básico"
-  },
-  {
-    "titulo": "Atividade Nível Intermediário: Desafios DFS",
-    "tipo": "atividade",
-    "descricao": "Problemas práticos para aplicação do algoritmo DFS em labirintos.",
-    "link": "https://drive.google.com/file/d/1fGKxY4bg-FoNWApjKdp1ZdRf4pBNXsKl/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca em Profundidade",
-    "subtopicos": "Resolução, Grafos",
-    "palavras_chave": "drive, intermediário",
-    "nivel_dificuldade": "intermediário"
-  },
-  {
     "titulo": "Código: DFS com Lista de Visitados",
     "tipo": "codigo",
     "descricao": "Implementação em Python de DFS prevenindo loops com controle de visitados.",
@@ -1109,7 +1681,7 @@
     "topico_principal": "Busca em Profundidade",
     "subtopicos": "Python, Algoritmos IA",
     "palavras_chave": "github, python",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Código: Implementação Genérica DFS",
@@ -1120,8 +1692,9 @@
     "topico_principal": "Busca em Profundidade",
     "subtopicos": "Algoritmos, Programação",
     "palavras_chave": "github, código",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
+
   {
     "titulo": "Código: BFS vs DFS using Queue and Stack",
     "tipo": "codigo",
@@ -1131,7 +1704,315 @@
     "topico_principal": "Algoritmos de Busca",
     "subtopicos": "Estruturas de Dados, BFS, DFS",
     "palavras_chave": "github, comparação",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
+  },
+      {
+    "titulo": "Exercício: Busca em profundidade — busca em profundidade atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: busca_em_profundidade_atividade_01.pdf.",
+    "link": "https://drive.google.com/file/d/1uRUnSh7FOl1ybAY3BlL_AKxX0e3vWnvK/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — busca em profundidade atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: busca_em_profundidade_atividade_02.pdf.",
+    "link": "https://drive.google.com/file/d/1nG9tRl47scoARSLu4-lgL_FfXHfxr59Y/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — busca em profundidade atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: busca_em_profundidade_atividade_03.pdf.",
+    "link": "https://drive.google.com/file/d/1SWDxvoQ3iTeQwlIrDK83jGGLkpn-5gBh/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — busca em profundidade atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: busca_em_profundidade_atividade_04.pdf.",
+    "link": "https://drive.google.com/file/d/1m5RJfRo2UgDKU4Ff0qZGb1BC4aIx6ku1/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — busca em profundidade atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: busca_em_profundidade_atividade_05.pdf.",
+    "link": "https://drive.google.com/file/d/1fYooLT-3ajyDxfHGkRGfBr88tR_ZeZqa/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — lista de exercicios busca em profundidade intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: lista_de_exercicios_busca_em_profundidade_intermediario_q01.pdf.",
+    "link": "https://drive.google.com/file/d/12cNSZ1HUs3OVUKeQ8wDkJ1EVt7qACd-n/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — lista de exercicios busca em profundidade intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: lista_de_exercicios_busca_em_profundidade_intermediario_q02.pdf.",
+    "link": "https://drive.google.com/file/d/1Gy-M_mBsEBYJKcQjdkXaKnYS_y5j692p/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — lista de exercicios busca em profundidade intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: lista_de_exercicios_busca_em_profundidade_intermediario_q03.pdf.",
+    "link": "https://drive.google.com/file/d/1ULmQdMeOMmhmePadurvMUwoYU800PFAy/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — lista de exercicios busca em profundidade intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: lista_de_exercicios_busca_em_profundidade_intermediario_q04.pdf.",
+    "link": "https://drive.google.com/file/d/1asAIEuzdW0BoOLGK1ctXgBPaFJ42ElSA/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — lista de exercicios busca em profundidade intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: lista_de_exercicios_busca_em_profundidade_intermediario_q05.pdf.",
+    "link": "https://drive.google.com/file/d/13FozlRV4M7DMlo9QGvxxvbAehHzg9cSS/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — lista de exercicios busca em profundidade intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: lista_de_exercicios_busca_em_profundidade_intermediario_q06.pdf.",
+    "link": "https://drive.google.com/file/d/1-E0LDeCQFUhcUFR7QkBlo9zT0gSHNKod/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — lista de exercicios busca em profundidade intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: lista_de_exercicios_busca_em_profundidade_intermediario_q07.pdf.",
+    "link": "https://drive.google.com/file/d/1gzsBGGz-zKZ6QZeUj_1YtYxybEIDwHRp/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — lista de exercicios busca em profundidade intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: lista_de_exercicios_busca_em_profundidade_intermediario_q08.pdf.",
+    "link": "https://drive.google.com/file/d/18Xk-Aj2TlM0jnX0qz3tNaV4TY6-jsmAs/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — lista de exercicios busca em profundidade intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: lista_de_exercicios_busca_em_profundidade_intermediario_q09.pdf.",
+    "link": "https://drive.google.com/file/d/1T85w-tA5Z1edU5sHiZyJ2QplxJyPR5hy/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em profundidade — lista de exercicios busca em profundidade intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em profundidade. Arquivo de origem: lista_de_exercicios_busca_em_profundidade_intermediario_q10.pdf.",
+    "link": "https://drive.google.com/file/d/15aXjlBZBwXyNyH8VwosRtdFnUjdd0_eO/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em profundidade",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em profundidade, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+    {
+    "titulo": "Exercício: Busca em largura — busca em largura atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: busca_em_largura_atividade_01.pdf.",
+    "link": "https://drive.google.com/file/d/15fWkGfsCA--Mms7tOPmrSGlCV4ptlp1P/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — busca em largura atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: busca_em_largura_atividade_02.pdf.",
+    "link": "https://drive.google.com/file/d/14VEqyr7ybvFFdC5lEsonPzNWyqzQxk_4/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — busca em largura atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: busca_em_largura_atividade_03.pdf.",
+    "link": "https://drive.google.com/file/d/15sBYViZe2ycstwZ5DW8uU5Gyhn4miXjn/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — busca em largura atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: busca_em_largura_atividade_04.pdf.",
+    "link": "https://drive.google.com/file/d/1lN8L-_ZtipIGKdwhSACtpDVYRFTImeFX/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — busca em largura atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: busca_em_largura_atividade_05.pdf.",
+    "link": "https://drive.google.com/file/d/1zlOQQqi-lHyVjURaWZDrcjqYzpXeLGcU/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — busca em largura atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: busca_em_largura_atividade_06.pdf.",
+    "link": "https://drive.google.com/file/d/18BsvEd_9l1Zt6IhvKCF0exWLWL_bUCpy/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — busca em largura atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: busca_em_largura_atividade_07.pdf.",
+    "link": "https://drive.google.com/file/d/1wAZZbyJWT6LMhpzpfqyCeeiqu65qbBvy/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — lista de exercicios busca em largura intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: lista_de_exercicios_busca_em_largura_intermediario_q01.pdf.",
+    "link": "https://drive.google.com/file/d/1KnNO0xfznSj1YJs6cqvGKX_V1-8QS_jl/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — lista de exercicios busca em largura intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: lista_de_exercicios_busca_em_largura_intermediario_q02.pdf.",
+    "link": "https://drive.google.com/file/d/1VO5L8ZqJTzq7gRpdH0oL2FfBpssykdMc/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — lista de exercicios busca em largura intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: lista_de_exercicios_busca_em_largura_intermediario_q03.pdf.",
+    "link": "https://drive.google.com/file/d/1DhDVJFsAfBpf89Ulg7oSWFoJ_yqBGcEL/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — lista de exercicios busca em largura intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: lista_de_exercicios_busca_em_largura_intermediario_q04.pdf.",
+    "link": "https://drive.google.com/file/d/1DYEnrEsR1JMH-MiyU7jaHjK6959fSWcn/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — lista de exercicios busca em largura intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: lista_de_exercicios_busca_em_largura_intermediario_q05.pdf.",
+    "link": "https://drive.google.com/file/d/1awTui1RDDeEW3NOGGqgMLh7qbYSohx_2/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca em largura — lista de exercicios busca em largura intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca em largura. Arquivo de origem: lista_de_exercicios_busca_em_largura_intermediario_q06.pdf.",
+    "link": "https://drive.google.com/file/d/1st1LY0_AARMUXbr9yqQb3spJGSWpKnBl/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca em largura",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca em largura, intermediário",
+    "nivel_dificuldade": "intermediário"
   },
  {
     "titulo": "Busca com Adversário: Jogos (UFRGS)",
@@ -1197,7 +2078,7 @@
     "topico_principal": "Busca Competitiva",
     "subtopicos": "Python, Tic-Tac-Toe, Game AI",
     "palavras_chave": "github, implementation, minimax",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Aula: Fundamentos da Busca Competitiva (Drive)",
@@ -1244,28 +2125,6 @@
     "nivel_dificuldade": "básico"
   },
   {
-    "titulo": "Atividade Nível Básico: Fixação Minimax",
-    "tipo": "atividade",
-    "descricao": "Exercícios introdutórios para desenhar árvores de jogos e calcular valores Minimax.",
-    "link": "https://drive.google.com/file/d/1YFT9yQwkvjHyXhwYA0rXTGATu6jE0Y1X/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca Competitiva",
-    "subtopicos": "Fixação, Teoria",
-    "palavras_chave": "drive, básico, exercícios",
-    "nivel_dificuldade": "básico"
-  },
-  {
-    "titulo": "Atividade Nível Intermediário: Desafios de Jogos e Poda",
-    "tipo": "atividade",
-    "descricao": "Problemas práticos envolvendo poda alfa-beta e análise de estados em jogos complexos.",
-    "link": "https://drive.google.com/file/d/1EBcZK93MdQTYdf0lcuRNIsoCffcK3Zjl/view",
-    "idioma": "pt-br",
-    "topico_principal": "Busca Competitiva",
-    "subtopicos": "Resolução, Poda Alfa-Beta",
-    "palavras_chave": "drive, intermediário, prática",
-    "nivel_dificuldade": "intermediário"
-  },
-  {
     "titulo": "Projeto: Programação Competitiva FACOM",
     "tipo": "codigo",
     "descricao": "Repositório com diversos algoritmos de programação competitiva e desafios de lógica.",
@@ -1274,7 +2133,7 @@
     "topico_principal": "Algoritmos",
     "subtopicos": "Programação, Desafios",
     "palavras_chave": "github, facom, competição",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
   },
   {
     "titulo": "Código: Jogo da Velha com IA (Minimax)",
@@ -1285,7 +2144,183 @@
     "topico_principal": "Busca Competitiva",
     "subtopicos": "Python, Jogo da Velha, IA",
     "palavras_chave": "github, código, prática",
-    "nivel_dificuldade": "avançado"
+    "nivel_dificuldade": "intermediário"
+  },
+    {
+    "titulo": "Exercício: Busca competitiva — busca competitiva atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: busca_competitiva_atividade_01.pdf.",
+    "link": "https://drive.google.com/file/d/1D72cd2Zigeh2Re0p5FQpHH80k90A3oav/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — busca competitiva atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: busca_competitiva_atividade_02.pdf.",
+    "link": "https://drive.google.com/file/d/1gd26dR7S0SXtVudQTjvep6_E5yt0Kw2z/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — busca competitiva atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: busca_competitiva_atividade_03.pdf.",
+    "link": "https://drive.google.com/file/d/1WOROBADGOQXP3PCU4SzYk2wrJyLSVAnM/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — busca competitiva atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: busca_competitiva_atividade_04.pdf.",
+    "link": "https://drive.google.com/file/d/1fgu3dyu03Kaq8lPE7UbrjCrxPnYapopU/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — busca competitiva atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: busca_competitiva_atividade_05.pdf.",
+    "link": "https://drive.google.com/file/d/1iFMT7ElaHcfeUU9P2h-yDc-Zuctripe5/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — busca competitiva atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: busca_competitiva_atividade_06.pdf.",
+    "link": "https://drive.google.com/file/d/1KO0RDUMk11CghZTo2VxImGBWSgu9BvfO/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — busca competitiva atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: busca_competitiva_atividade_07.pdf.",
+    "link": "https://drive.google.com/file/d/1FMVL1iMXioAgdSopSVbuJObusrkMduC0/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — busca competitiva atividade",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: busca_competitiva_atividade_08.pdf.",
+    "link": "https://drive.google.com/file/d/1lzHTsm_r5UMIjJ83e_radm_PrQU2hv0P/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, básico",
+    "nivel_dificuldade": "básico"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — lista de exercicios busca competitiva intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: lista_de_exercicios_busca_competitiva_intermediario_q01.pdf.",
+    "link": "https://drive.google.com/file/d/1bSJVbo8owHrIXtLZVLZ48np3Fm3VcCMZ/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — lista de exercicios busca competitiva intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: lista_de_exercicios_busca_competitiva_intermediario_q02.pdf.",
+    "link": "https://drive.google.com/file/d/1W2MPLTZnV-dDXZEL4UQ8rgHRyky4lzDg/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — lista de exercicios busca competitiva intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: lista_de_exercicios_busca_competitiva_intermediario_q03.pdf.",
+    "link": "https://drive.google.com/file/d/1Wt9GmllHuzmtsDZMgdrKuPqN0pLJF19u/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — lista de exercicios busca competitiva intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: lista_de_exercicios_busca_competitiva_intermediario_q04(1).pdf.",
+    "link": "https://drive.google.com/file/d/1XhQgYfKPzgYZFhqcAusWk3duvV3IT2Td/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — lista de exercicios busca competitiva intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: lista_de_exercicios_busca_competitiva_intermediario_q05.pdf.",
+    "link": "https://drive.google.com/file/d/1yj4B_Ur--25UIrkB72WoT7_n708HscGV/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — lista de exercicios busca competitiva intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: lista_de_exercicios_busca_competitiva_intermediario_q06.pdf.",
+    "link": "https://drive.google.com/file/d/1BwrfnQWzCqTjBY-bvssBRpLPimlJSYWc/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — lista de exercicios busca competitiva intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: lista_de_exercicios_busca_competitiva_intermediario_q07.pdf.",
+    "link": "https://drive.google.com/file/d/1XMPTaIcWF7bwWUfHG8h7757xABM062dT/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, intermediário",
+    "nivel_dificuldade": "intermediário"
+  },
+  {
+    "titulo": "Exercício: Busca competitiva — lista de exercicios busca competitiva intermediario",
+    "tipo": "atividade",
+    "descricao": "Atividade individual em PDF sobre busca competitiva. Arquivo de origem: lista_de_exercicios_busca_competitiva_intermediario_q08.pdf.",
+    "link": "https://drive.google.com/file/d/1fG-FV-taKGzA-bCgRpU6Ew8K7RF_pMkn/view",
+    "idioma": "pt-br",
+    "topico_principal": "Busca competitiva",
+    "subtopicos": "Prática, Exercícios",
+    "palavras_chave": "atividade, exercício, busca competitiva, intermediário",
+    "nivel_dificuldade": "intermediário"
   }
 ]
 
