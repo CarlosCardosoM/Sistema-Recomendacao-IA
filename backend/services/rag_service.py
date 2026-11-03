@@ -1,3 +1,5 @@
+import unicodedata
+
 import numpy as np
 from sqlalchemy.orm import Session
 
@@ -21,6 +23,13 @@ THRESHOLD_GENERICO = 0.70
 # melhor match, para não "completar" o top_k com conteúdo fora do tópico
 MARGEM_RELEVANCIA = 0.12
 
+# Pool de recomendação (separado do contexto do LLM): margem mais larga e
+# no máximo MAX_POR_TIPO_POOL itens (títulos distintos) por tipo de conteúdo,
+# para que a preferência do aluno por um tipo tenha candidatos reais.
+MARGEM_RECOMENDACAO     = 0.25
+MAX_POR_TIPO_POOL       = 2
+TOP_K_POOL_RECOMENDACAO = 10
+
 # Tópicos cadastrados no banco, com as variações (PT/EN) usadas em
 # topico_principal. A similaridade por embedding não discrimina bem
 # subtópicos próximos (ex.: "Busca Cega" x "Busca A*" ficam a ~0.01 de
@@ -29,13 +38,32 @@ MARGEM_RELEVANCIA = 0.12
 TOPICOS_ALIASES = {
     "Busca Cega":            ["Busca Cega", "Blind Search"],
     "Busca Informada":       ["Busca Informada", "Informed Search"],
-    "Busca A*":              ["Busca A*", "A* Search"],
+    "Busca A*":              ["Busca A*", "A* Search", "Busca A estrela"],
     "Busca Gulosa":          ["Busca Gulosa", "Greedy Search"],
     "Busca Custo Uniforme":  ["Busca Custo Uniforme", "Uniform Cost Search"],
     "Busca em Largura":      ["Busca em Largura", "Breadth-First Search"],
     "Busca em Profundidade": ["Busca em Profundidade", "Depth-First Search"],
     "Busca Competitiva":     ["Busca Competitiva", "Competitive Search"],
 }
+
+# Tópicos gerais do banco (ex.: livros de IA, visões gerais de algoritmos de
+# busca). Não pertencem a um algoritmo específico, então continuam elegíveis
+# mesmo quando o LLM identifica um tópico — a similaridade, o threshold e a
+# margem relativa decidem se entram. Sem isso, esses OAs nunca chegavam ao
+# recomendador quando havia tópico identificado.
+TOPICOS_GERAIS = ["Inteligência Artificial", "Algoritmos de Busca", "Algoritmos"]
+
+
+def _norm(texto: str | None) -> str:
+    """Minúsculas, sem acento, sem espaços nas pontas. Evita que 'Busca cega'
+    e 'Busca Cega' (ou 'Inteligência'/'Inteligencia') sejam tratados como
+    tópicos diferentes."""
+    if not texto:
+        return ""
+    sem_acento = unicodedata.normalize("NFKD", texto)
+    sem_acento = "".join(c for c in sem_acento if not unicodedata.combining(c))
+    return sem_acento.lower().strip()
+
 
 # Tipos de conteúdo cadastrados no banco (ver Conteudo.tipo)
 TIPOS_DISPONIVEIS = ["atividade", "video", "artigo", "livro", "codigo"]
@@ -76,9 +104,9 @@ def buscar_conteudos_relevantes(
     pergunta: str = "",
     mensagens: list | None = None,
     top_k: int = TOP_K_CANDIDATOS
-) -> tuple[list[tuple], str]:
+) -> tuple[list[tuple], list[tuple], str]:
     """
-    Retorna (resultados, categoria) — categoria é "tecnica", "saudacao" ou
+    Retorna (resultados_contexto, pool_recomendacao, categoria) — categoria é "tecnica", "saudacao" ou
     "fora_do_escopo", pra quem chama decidir se deve gerar uma resposta
     normal ou recusar (ver chat_controller.responder_pergunta).
     """
@@ -102,8 +130,13 @@ def buscar_conteudos_relevantes(
     conteudos = db.query(Conteudo).filter(Conteudo.embeddings != None).all()
 
     if intencao["topico"]:
-        aliases = TOPICOS_ALIASES[intencao["topico"]]
-        candidatos_topico = [c for c in conteudos if c.topico_principal in aliases]
+        aliases = {_norm(a) for a in TOPICOS_ALIASES[intencao["topico"]]}
+        gerais  = {_norm(t) for t in TOPICOS_GERAIS}
+        candidatos_topico = [
+            c for c in conteudos
+            if _norm(c.topico_principal) in aliases
+            or _norm(c.topico_principal) in gerais
+        ]
         if candidatos_topico:
             conteudos = candidatos_topico
 
@@ -111,7 +144,7 @@ def buscar_conteudos_relevantes(
     # senão a busca mistura artigo/vídeo/livro junto com o exercício
     # prático que o aluno pediu de fato
     if intencao["tipo"]:
-        candidatos_tipo = [c for c in conteudos if c.tipo == intencao["tipo"]]
+        candidatos_tipo = [c for c in conteudos if _norm(c.tipo) == _norm(intencao["tipo"])]
         if candidatos_tipo:
             conteudos = candidatos_tipo
 
@@ -124,17 +157,41 @@ def buscar_conteudos_relevantes(
 
     resultados.sort(key=lambda x: x[1], reverse=True)
     if not resultados:
-        return [], categoria
+        return [], [], categoria
 
-    # Só mantém resultados próximos do melhor match — evita completar
-    # o top_k com conteúdo de outro tópico só porque passou do threshold
     melhor_score = resultados[0][1]
-    resultados = [
+
+    # CONTEXTO DO LLM: só mantém resultados próximos do melhor match — evita
+    # completar o top_k com conteúdo de outro tópico só porque passou do
+    # threshold (comportamento original, inalterado)
+    resultados_contexto = [
         (c, s) for c, s in resultados
         if s >= melhor_score - MARGEM_RELEVANCIA
     ]
 
-    return resultados[:top_k], categoria
+    # POOL DE RECOMENDAÇÃO: precisa de variedade de tipos para a preferência
+    # do aluno ter o que escolher. Itens do mesmo tipo e com o mesmo título
+    # (ex.: dezenas de PDFs de atividade com metadados quase idênticos) têm
+    # similaridade praticamente igual e, sem limite por tipo, ocupam todas as
+    # vagas e expulsam artigos/livros/vídeos.
+    resultados_pool = [
+        (c, s) for c, s in resultados
+        if s >= melhor_score - MARGEM_RECOMENDACAO
+    ]
+    pool, por_tipo, titulos_vistos, links_vistos = [], {}, set(), set()
+    for c, s in resultados_pool:
+        chave_titulo = (_norm(c.tipo), _norm(c.titulo))
+        # mesmo link = mesmo material (ex.: um artigo cadastrado em dois tópicos)
+        if chave_titulo in titulos_vistos or (c.link and c.link in links_vistos):
+            continue
+        if por_tipo.get(_norm(c.tipo), 0) >= MAX_POR_TIPO_POOL:
+            continue
+        titulos_vistos.add(chave_titulo)
+        links_vistos.add(c.link)
+        por_tipo[_norm(c.tipo)] = por_tipo.get(_norm(c.tipo), 0) + 1
+        pool.append((c, s))
+
+    return resultados_contexto[:top_k], pool[:TOP_K_POOL_RECOMENDACAO], categoria
 
 
 def montar_contexto(conteudos_relevantes: list[tuple]) -> str:
@@ -175,10 +232,10 @@ def processar_pergunta(db: Session, pergunta: str, mensagens: list) -> dict:
 
     # 2. Busca o pool amplo de candidatos relevantes (mesma pergunta,
     #    mesmo tópico/tipo) com threshold dinâmico via LLM
-    candidatos_recomendacao, categoria = buscar_conteudos_relevantes(
+    resultados_contexto, candidatos_recomendacao, categoria = buscar_conteudos_relevantes(
         db, vetor_pergunta, pergunta, mensagens
     )
-    conteudos_relevantes = candidatos_recomendacao[:TOP_K_CONTEXTO]
+    conteudos_relevantes = resultados_contexto[:TOP_K_CONTEXTO]
 
     # 3. Monta contexto e histórico
     contexto  = montar_contexto(conteudos_relevantes)

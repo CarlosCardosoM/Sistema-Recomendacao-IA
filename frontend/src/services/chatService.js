@@ -35,3 +35,23 @@ export async function fecharConteudo(interacaoId) {
   const resposta = await api.put(`/interacoes/${interacaoId}/fechar`);
   return resposta.data;
 }
+
+// ── Curtidas ──────────────────────────────────────────────────────────────────
+
+export async function curtirConteudo(email, conteudo_id) {
+  // POST /curtidas/ — 400 se o conteúdo já estava curtido
+  const resposta = await api.post("/curtidas/", { email, conteudo_id });
+  return resposta.data;
+}
+
+export async function descurtirConteudo(email, conteudo_id) {
+  // DELETE /curtidas/ com corpo JSON — 404 se a curtida não existia
+  const resposta = await api.delete("/curtidas/", { data: { email, conteudo_id } });
+  return resposta.data;
+}
+
+export async function listarCurtidas(email) {
+  // GET /curtidas/{email} — retorna [{ conteudo_id }, ...]
+  const resposta = await api.get(`/curtidas/${encodeURIComponent(email)}`);
+  return resposta.data;
+}

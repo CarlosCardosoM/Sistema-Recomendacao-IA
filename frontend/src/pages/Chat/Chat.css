@@ -408,6 +408,24 @@
   padding: var(--espaco-8) 0;
 }
 
+/* ── Botão de curtir no card de recomendação ── */
+.recomendacao-card__curtir {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: var(--raio-pill);
+  color: var(--cor-texto-terciario);
+  flex-shrink: 0;
+  transition: color 0.15s, background 0.15s, transform 0.1s;
+}
+.recomendacao-card__curtir:hover {
+  color: #dc2626;
+  background: #fef2f2;
+}
+.recomendacao-card__curtir:active { transform: scale(0.9); }
+.recomendacao-card__curtir.curtido { color: #dc2626; }
+
 /* ── Card de recomendação acessado ── */
 .recomendacao-card.acessado {
   opacity: 0.7;

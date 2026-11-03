@@ -9,11 +9,14 @@ import {
   buscarHistorico,
   abrirConteudo,
   fecharConteudo,
+  curtirConteudo,
+  descurtirConteudo,
+  listarCurtidas,
 } from "../../services/chatService";
 import vetriaperfil from "../../assets/vetriaperfil.png";
 import "./Chat.css";
 import ReactMarkdown from "react-markdown";
-import { Plus, Trash2, User, LogOut, Send, Pencil, Check } from "lucide-react";
+import { Plus, Trash2, User, LogOut, Send, Pencil, Check, Heart } from "lucide-react";
 
 
 function chaveSessoes(email) {
@@ -36,7 +39,7 @@ function proximoNumeroSessao(chave) {
   return proximo;
 }
 
-function CardRecomendacao({ item, aluno }) {
+function CardRecomendacao({ item, aluno, curtido, aoCurtir }) {
   const [acessado, setAcessado] = useState(false);
 
   async function aoAcessar() {
@@ -57,6 +60,16 @@ function CardRecomendacao({ item, aluno }) {
     <div className={`recomendacao-card ${acessado ? "acessado" : ""}`}>
       <span className="recomendacao-card__titulo">{item.titulo}</span>
       <span className="recomendacao-card__tipo">{item.tipo}</span>
+      <button
+        type="button"
+        className={`recomendacao-card__curtir ${curtido ? "curtido" : ""}`}
+        onClick={() => aoCurtir(item.conteudo_id)}
+        aria-pressed={curtido}
+        aria-label={curtido ? "Remover curtida" : "Curtir conteúdo"}
+        title={curtido ? "Remover curtida" : "Curtir conteúdo"}
+      >
+        <Heart size={15} strokeWidth={2} fill={curtido ? "currentColor" : "none"} />
+      </button>
       <button className="recomendacao-card__link" onClick={aoAcessar}>
         {acessado ? "✓ Acessado" : "Acessar →"}
       </button>
@@ -64,21 +77,27 @@ function CardRecomendacao({ item, aluno }) {
   );
 }
 
-function Recomendacoes({ lista, aluno }) {
+function Recomendacoes({ lista, aluno, curtidos, aoCurtir }) {
   if (!lista || lista.length === 0) return null;
   return (
     <div className="recomendacoes">
       <p className="recomendacoes__titulo">Conteúdos recomendados</p>
       <div className="recomendacoes__lista">
         {lista.map((item, idx) => (
-          <CardRecomendacao key={idx} item={item} aluno={aluno} />
+          <CardRecomendacao
+            key={idx}
+            item={item}
+            aluno={aluno}
+            curtido={curtidos.has(item.conteudo_id)}
+            aoCurtir={aoCurtir}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function Mensagem({ mensagem, nomeAluno, aluno }) {
+function Mensagem({ mensagem, nomeAluno, aluno, curtidos, aoCurtir }) {
   const eUsuario = mensagem.papel === "usuario";
   return (
     <div className={`mensagem ${eUsuario ? "usuario" : "assistente"}`}>
@@ -92,7 +111,12 @@ function Mensagem({ mensagem, nomeAluno, aluno }) {
           {eUsuario ? mensagem.conteudo : <ReactMarkdown>{mensagem.conteudo}</ReactMarkdown>}
         </div>
         {!eUsuario && mensagem.recomendacoes && mensagem.recomendacoes.length > 0 && (
-          <Recomendacoes lista={mensagem.recomendacoes} aluno={aluno} />
+          <Recomendacoes
+            lista={mensagem.recomendacoes}
+            aluno={aluno}
+            curtidos={curtidos}
+            aoCurtir={aoCurtir}
+          />
         )}
       </div>
     </div>
@@ -197,8 +221,55 @@ export default function Chat() {
   const [texto, setTexto] = useState("");
   const [carregando, setCarregando] = useState(false);
 
+  // IDs dos conteúdos curtidos pelo aluno. Fica aqui (e não em cada card) para
+  // que o mesmo conteúdo apareça curtido em todas as mensagens e sessões.
+  const [curtidos, setCurtidos] = useState(() => new Set());
+  const curtidasPendentes = useRef(new Set()); // evita duplo clique durante a requisição
+
   const fimMensagensRef = useRef(null);
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (!aluno?.email) return;
+    listarCurtidas(aluno.email)
+      .then((lista) => setCurtidos(new Set(lista.map((c) => c.conteudo_id))))
+      .catch((erro) => console.error("Erro ao carregar curtidas:", erro));
+  }, [aluno?.email]);
+
+  function definirCurtido(conteudoId, curtido) {
+    setCurtidos((ant) => {
+      const novo = new Set(ant);
+      if (curtido) novo.add(conteudoId);
+      else novo.delete(conteudoId);
+      return novo;
+    });
+  }
+
+  async function aoAlternarCurtida(conteudoId) {
+    if (!aluno?.email || conteudoId == null) return;
+    if (curtidasPendentes.current.has(conteudoId)) return;
+    curtidasPendentes.current.add(conteudoId);
+
+    const jaCurtido = curtidos.has(conteudoId);
+    definirCurtido(conteudoId, !jaCurtido); // atualização otimista
+
+    try {
+      if (jaCurtido) await descurtirConteudo(aluno.email, conteudoId);
+      else await curtirConteudo(aluno.email, conteudoId);
+    } catch (erro) {
+      const status = erro?.response?.status;
+      // 400 ao curtir = já estava curtido; 404 ao descurtir = já não existia.
+      // Nesses casos o estado otimista já está correto.
+      const jaEstavaNoEstadoDesejado =
+        (!jaCurtido && status === 400) || (jaCurtido && status === 404);
+      if (!jaEstavaNoEstadoDesejado) {
+        definirCurtido(conteudoId, jaCurtido); // desfaz
+        console.error("Erro ao atualizar curtida:", erro);
+      }
+    } finally {
+      curtidasPendentes.current.delete(conteudoId);
+    }
+  }
 
   useEffect(() => {
     try { localStorage.setItem(chaveSessoesAtual, JSON.stringify(sessoes)); } catch {}
@@ -398,7 +469,14 @@ export default function Chat() {
             <div className="chat-carregando-historico">Carregando conversa...</div>
           ) : (
             mensagens.map((msg, idx) => (
-              <Mensagem key={idx} mensagem={msg} nomeAluno={aluno?.nome} aluno={aluno} />
+              <Mensagem
+                key={idx}
+                mensagem={msg}
+                nomeAluno={aluno?.nome}
+                aluno={aluno}
+                curtidos={curtidos}
+                aoCurtir={aoAlternarCurtida}
+              />
             ))
           )}
           {carregando && <MensagemCarregando />}
